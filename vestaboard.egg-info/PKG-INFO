@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: vestaboard
-Version: 0.0.1
+Version: 0.0.2
 Summary: A Vestaboard Wrapper
 Home-page: https://github.com/SonicRift/Vestaboard.git
 Author: Shane Sutro
 Author-email: shane@shanesutro.com
-License: UNKNOWN
+License: LICENSE
 Description: # Vestaboard
         
         This is my first public repository - if you have suggestions or information, please feel free to reach out to me!
