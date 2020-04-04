@@ -1,0 +1,7 @@
+README.md
+setup.py
+vestaboard/__init__.py
+vestaboard.egg-info/PKG-INFO
+vestaboard.egg-info/SOURCES.txt
+vestaboard.egg-info/dependency_links.txt
+vestaboard.egg-info/top_level.txt

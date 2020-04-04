@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: vestaboard
+Version: 0.0.1
+Summary: A Vestaboard Wrapper
+Home-page: https://github.com/SonicRift/Vestaboard.git
+Author: Shane Sutro
+Author-email: shane@shanesutro.com
+License: UNKNOWN
+Description: # Vestaboard
+        
+        This is my first public repository - if you have suggestions or information, please feel free to reach out to me!
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
