@@ -1,6 +1,7 @@
 import requests
-import formatter
-import vbUrls
+import vestaboard.formatter
+import vestaboard.characters
+import vestaboard.vbUrls
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):

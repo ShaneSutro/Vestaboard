@@ -3,6 +3,7 @@
 
 # Setuptools distribution folder
 /dist/
+/build/
 
 #Python egg metadata
 /*.egg-info
