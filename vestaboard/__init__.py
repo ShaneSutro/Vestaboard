@@ -1,6 +1,6 @@
 import requests
 import formatter
-import url
+import vbUrls
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
@@ -36,7 +36,7 @@ class Board:
         "X-Vestaboard-Api-Secret" : self.apiSecret
     }
     finalText = formatter.standard(text)
-    r = requests.post(url.post.format(self.subscriptionId), headers=headers, json=finalText)
+    r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
     print(r.status_code)
     print(r.text)
 
@@ -60,7 +60,7 @@ class Installable:
       'X-Vestaboard-Api-Key': self.apiKey,
       'X-Vestaboard-Api-Secret': self.apiSecret
     }
-    response = requests.get(url.subscription, headers=headers)
+    response = requests.get(vbUrls.subscription, headers=headers)
     if self.saveCredentials or save and response.status_code == 200:
       with open('./credentials.txt', 'a') as cred:
         cred.write(response.json()['subscriptions'][0]['_id'] + '\n')

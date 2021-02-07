@@ -1,10 +1,14 @@
 README.md
 setup.py
+Vestaboard.egg-info/PKG-INFO
+Vestaboard.egg-info/SOURCES.txt
+Vestaboard.egg-info/dependency_links.txt
+Vestaboard.egg-info/requires.txt
+Vestaboard.egg-info/top_level.txt
 vestaboard/__init__.py
 vestaboard/characters.py
 vestaboard/formatter.py
-vestaboard/post.py
-vestaboard/vestaboard.py
+vestaboard/vbUrls.py
 vestaboard.egg-info/PKG-INFO
 vestaboard.egg-info/SOURCES.txt
 vestaboard.egg-info/dependency_links.txt
