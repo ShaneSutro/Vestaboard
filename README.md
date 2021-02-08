@@ -82,6 +82,7 @@ vboard.post('Everything you can imagine is real.')
 - [ ] Additional formatting for 6 x 22 list of lists for sending custom messages
 - [ ] Unit and other tests inside the `/test` folder
 - [ ] Suggestions or ideas for improvement are always welcome!
+
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
 
