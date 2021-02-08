@@ -6,6 +6,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/vestaboard)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vestaboard)
 ***
+
 ## GitHub Stats
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SonicRift/Vestaboard)
