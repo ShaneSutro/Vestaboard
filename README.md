@@ -1,6 +1,15 @@
 # Vestaboard
 
 [![Build Status](https://travis-ci.com/SonicRift/Vestaboard.svg?branch=master)](https://travis-ci.com/SonicRift/Vestaboard)
+[![PyPI version](https://badge.fury.io/py/Vestaboard.svg)](https://badge.fury.io/py/Vestaboard)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/vestaboard)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vestaboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/08a4d8d4fbf840be84de4af6b3d9d8af)](https://www.codacy.com/gh/SonicRift/Vestaboard/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SonicRift/Vestaboard&amp;utm_campaign=Badge_Grade)
+***
+## GitHub Stats
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/SonicRift/Vestaboard)
+![GitHub contributors](https://img.shields.io/github/contributors/SonicRift/Vestaboard)
 
 This is a lightweight and unassuming wrapper for the Vestaboard API.
 ***
