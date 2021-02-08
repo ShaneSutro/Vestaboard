@@ -12,6 +12,8 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/SonicRift/Vestaboard)
 
 This is a lightweight and unassuming wrapper for the Vestaboard API.
+You belong here :heart:
+By [Shane Sutro] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
 ***
 ### Official API
 You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/).
@@ -111,6 +113,7 @@ vboard.post('Everything you can imagine is real.')
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
 
-#### [Shane Sutro](https://github.com/SonicRift)
+#### [Shane Sutro]
 
 [open an issue]: https://github.com/SonicRift/Vestaboard/issues
+[Shane Sutro]: (https://github.com/SonicRift)
