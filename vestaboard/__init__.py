@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Vestaboard Module
 
 A lightweight wrapper for Vestaboard
