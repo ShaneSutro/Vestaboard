@@ -1,6 +1,9 @@
 # Compiled python modules
 *.pyc
 
+#Virtual Environment
+/venv/
+
 # Setuptools distribution folder
 /dist/
 /build/
@@ -14,6 +17,8 @@ credentials.txt
 
 #Other files
 test.py
+.pytest_cache
+
 
 #VS Code Files
 .vscode/
