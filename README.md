@@ -1,5 +1,6 @@
 # Vestaboard
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7d172f1a1ede4c91bb379aa0837a3683)](https://app.codacy.com/gh/SonicRift/Vestaboard?utm_source=github.com&utm_medium=referral&utm_content=SonicRift/Vestaboard&utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.com/SonicRift/Vestaboard.svg?branch=master)](https://travis-ci.com/SonicRift/Vestaboard)
 [![PyPI version](https://badge.fury.io/py/Vestaboard.svg)](https://badge.fury.io/py/Vestaboard)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/vestaboard)
