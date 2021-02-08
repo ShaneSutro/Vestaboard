@@ -20,7 +20,7 @@ Once created, you will need to store your API Key and API Secret - you'll need t
 - Download and install into your project file
 - Via `pip`:
 
-`pip install vestaboard`
+```pip install vestaboard```
 
 #### Usage
 
