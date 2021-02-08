@@ -1,4 +1,5 @@
 """Vestaboard Module
+A lightweight wrapper for Vestaboard
 
 Board - Class
 Installable - Class
