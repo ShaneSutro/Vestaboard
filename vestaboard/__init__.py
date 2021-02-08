@@ -21,7 +21,7 @@ class Board:
     if not Installable:  #check for cred file
       if (not apiKey or not apiSecret or not subscriptionId):
         try:
-          creds = self.get_creds()
+          creds = get_creds()
           if (len(creds) == 3):
             self.apiKey = creds[0]
             self.apiSecret = creds[1]
@@ -90,7 +90,7 @@ class Installable:
     print(response.json()['subscriptions'])
     return response.json()['subscriptions']
 
-def get_creds(self):
+def get_creds():
     with open('./credentials.txt', 'r') as cred:
       creds = cred.read().splitlines()
       return creds
