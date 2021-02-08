@@ -12,7 +12,9 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/SonicRift/Vestaboard)
 
 This is a lightweight and unassuming wrapper for the Vestaboard API.
+
 You belong here :heart:
+
 By [Shane Sutro] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
 ***
 ### Official API
