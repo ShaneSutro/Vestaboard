@@ -1,7 +1,8 @@
 # Vestaboard
 
-This is a lightweight and unassuming wrapper for the Vestaboard API.
 [![Build Status](https://travis-ci.com/SonicRift/Vestaboard.svg?branch=master)](https://travis-ci.com/SonicRift/Vestaboard)
+
+This is a lightweight and unassuming wrapper for the Vestaboard API.
 ***
 ### Official API
 You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/).
