@@ -13,7 +13,7 @@
 
 This is a lightweight and unassuming wrapper for the Vestaboard API.
 
-By [Shane Sutro] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
+By [Shane Sutro][] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
 ***
 ### Official API
 You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/).
@@ -110,12 +110,12 @@ vboard.post('Everything you can imagine is real.')
 -   [] Unit and other tests inside the `/test` folder
 -   [] Suggestions or ideas for improvement are always welcome!
 
-Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
+Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue][] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
 
-#### [Shane Sutro]
+#### [Shane Sutro][]
 
 You belong here :heart:
 
 [open an issue]: https://github.com/SonicRift/Vestaboard/issues
-[Shane Sutro]: https://github.com/SonicRift
+[shane sutro]: https://github.com/SonicRift
