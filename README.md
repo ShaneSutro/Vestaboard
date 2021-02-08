@@ -15,6 +15,15 @@ Once created, you will need to store your API Key and API Secret - you'll need t
 
 ### Using this package
 
+#### Installation
+
+- Download and install into your project file
+- Via `pip`:
+
+```pip install vestaboard```
+
+#### Usage
+
 This package will simplify the process of connecting your code to Vestaboard's API.
 By default, the module will store your API Key, API Secret, and Subscriber ID in a .txt file in the root folder of the project.
 If you do _not_ want to store this, pass `saveCredentials=False` into the creation of an `Installable`. Alternatively, you may skip creating an `Installable` alltogether if you already know your Subscription ID (which you can get from Vestaboards official portal if you'd like to skip this step).
@@ -32,13 +41,14 @@ vboard.post('And just like that, we were off.')
 
 If you already have your Subscription ID or you do not want to store it, you can call `Board()` directly and pass your API Key, API Secret and Subscription ID directly. Note that if you choose to not store these credentials, you will need to provide them each time you call a method on a `Board`.
 If you do choose to store them, they will be stored in a file called `credentials.txt` in the root directory of your project; remember to add `credentials.txt` to your `.gitignore` to avoid commiting your keys to GitHub. Alternatively, you may create a `config.py` file in your code and store the information there; again, add `config.py` to your `.gitignore`. Never upload API keys or API Secrets to a repository.
-#####config.py
+
+#### config.py
 ```python
 api_key='DrBXYxUN40z2dpIogNjO'
 api_secret='2Qc8cClVov2TI9eeudVP'
 subscription_id='5PmlVd5MnjtMIBYcBUXI'
 ```
-#####vestaboard.py
+#### vestaboard.py
 ```python
 from vestaboard import Board
 import config
@@ -77,6 +87,11 @@ vboard.post('Everything you can imagine is real.')
   - Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
 ***
 ## Repository Info
+#### Needs:
+- [ ] Additional formatting for 6 x 22 list of lists for sending custom messages
+- [ ] Unit and other tests inside the `/test` folder
+- [ ] Suggestions or ideas for improvement are always welcome!
+
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
 
