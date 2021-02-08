@@ -55,7 +55,7 @@ subscription_id='5PmlVd5MnjtMIBYcBUXI'
 from vestaboard import Board
 import config
 
-vboard = Board(config.api_key, config.api_secret, config.subscription_id)
+vboard = Board(apiKey=config.api_key, apiSecret=config.api_secret, subscriptionId=config.subscription_id)
 
 vboard.post('Love is all you need')
 ```
