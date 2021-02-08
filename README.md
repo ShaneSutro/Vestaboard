@@ -33,13 +33,13 @@ vboard.post('And just like that, we were off.')
 If you already have your Subscription ID or you do not want to store it, you can call `Board()` directly and pass your API Key, API Secret and Subscription ID directly. Note that if you choose to not store these credentials, you will need to provide them each time you call a method on a `Board`.
 If you do choose to store them, they will be stored in a file called `credentials.txt` in the root directory of your project; remember to add `credentials.txt` to your `.gitignore` to avoid commiting your keys to GitHub. Alternatively, you may create a `config.py` file in your code and store the information there; again, add `config.py` to your `.gitignore`. Never upload API keys or API Secrets to a repository.
 
-####config.py
+###config.py
 ```python
 api_key='DrBXYxUN40z2dpIogNjO'
 api_secret='2Qc8cClVov2TI9eeudVP'
 subscription_id='5PmlVd5MnjtMIBYcBUXI'
 ```
-####vestaboard.py
+###vestaboard.py
 ```python
 from vestaboard import Board
 import config
