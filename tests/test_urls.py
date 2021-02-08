@@ -1,5 +1,3 @@
-import pytest
-import vestaboard
 import vestaboard.vbUrls as vbUrls
 
 def test_post_url_matches():

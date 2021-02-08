@@ -1,10 +1,23 @@
+"""Vestaboard Module
+Board - Class
+Installable - Class
+"""
 import requests
-import vestaboard.formatter
-import vestaboard.characters
-import vestaboard.vbUrls
+import vestaboard.formatter as formatter
+import vestaboard.characters as characters
+import vestaboard.vbUrls as vbUrls
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
+    """Returns an instance of Board().
+
+    Keyword arguments:
+    Installable - an instance of Installable()
+    apiKey - your Vestaboard API Key
+    apiSecret - your Vestaboard API Secret
+    subscriptionId - your Subscription ID (this can be obtained for you by creating a new Installable() instance)
+    """
+
     if not Installable:  #check for cred file
       if (not apiKey or not apiSecret or not subscriptionId):
         try:
@@ -26,11 +39,6 @@ class Board:
       self.apiSecret = Installable.apiSecret
       self.subscriptionId = Installable.subscriptionId
 
-  def get_creds(self):
-    with open('./credentials.txt', 'r') as cred:
-      creds = cred.read().splitlines()
-      return creds
-
   def post(self, text):
     headers = {
         "X-Vestaboard-Api-Key" : self.apiKey,
@@ -43,12 +51,21 @@ class Board:
 
 class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
+    """Returns an instance of Installable()
+    You can pass this into an instance of Board() as the first keyword argument.
+
+    Keyword arguments:
+    apiKey: String (required) - your Vestaboard API Key
+    apiSecret: String (required) - your Vestaboard API Secret
+    getSubscripion: Bool (optional, default True) - If you already have your subscription ID, you may pass False into this method
+    saveCredentials: Bool (options, default True) - Choose whether or not to store your API keys in the home directory
+    """
+
     self.apiKey = apiKey
     self.apiSecret = apiSecret
     self.saveCredentials = saveCredentials
     if not apiKey or not apiSecret:
       raise ValueError('Installables must have an apiKey and apiSecret parameter.')
-    
     if saveCredentials and apiKey and apiSecret:
       with open('./credentials.txt', 'w') as cred:
         cred.write(apiKey + '\n')
@@ -73,6 +90,7 @@ class Installable:
     print(response.json()['subscriptions'])
     return response.json()['subscriptions']
 
-  def get_creds(self):
+def get_creds(self):
     with open('./credentials.txt', 'r') as cred:
-      print(cred.read().splitlines())
+      creds = cred.read().splitlines()
+      return creds

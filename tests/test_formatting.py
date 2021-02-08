@@ -1,4 +1,3 @@
-import vestaboard
 import vestaboard.formatter as formatter
 
 def test_standard_formatting():

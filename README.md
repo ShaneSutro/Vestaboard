@@ -5,7 +5,6 @@
 [![PyPI version](https://badge.fury.io/py/Vestaboard.svg)](https://badge.fury.io/py/Vestaboard)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/vestaboard)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vestaboard)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/08a4d8d4fbf840be84de4af6b3d9d8af)](https://www.codacy.com/gh/SonicRift/Vestaboard/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SonicRift/Vestaboard&amp;utm_campaign=Badge_Grade)
 ***
 ## GitHub Stats
 
@@ -29,8 +28,8 @@ Once created, you will need to store your API Key and API Secret - you'll need t
 
 #### Installation
 
-- Download and install into your project file
-- Via `pip`:
+  - Download and install into your project file
+  - Via `pip`:
 
 ```pip install vestaboard```
 
@@ -73,9 +72,10 @@ vboard.post('Love is all you need')
 ***
 ## Currently Supported
 Currently this module supports the following:
-- Creating an Installable object by passing in an API Key and API Secret
-  - This will find and store the Subscription ID for you
-- Creating an instance of Board, either by passing in an Installable or by passing in an API Key, API Secret _and_ Subscription ID
+  - Creating an Installable object by passing in an API Key and API Secret
+    - This will find and store the Subscription ID for you
+
+  - Creating an instance of Board, either by passing in an  Installable or by passing in an API Key, API Secret _and_ Subscription ID
 
 The board currently has 1 method available, the `.post()` method, which takes in a string and sends it to the board:
 
@@ -89,20 +89,24 @@ vboard.post('Everything you can imagine is real.')
 ```
 
 ## Upcoming Support
-- Formatting
-  - Want to right justify, left justify, or center? Coming soon!
-- Color codes
-  - Add in color chips alongside letters, numbers, and symbols to create unique combinations
-- Raw Mode
-  - Vestaboard supports a "list of lists" to send a message. This will allow you to precisely place characters exactly where you want them. Upcoming support to pass in a 6 x 22 array to place characters, complete with conversion from letters, numbers, and symbols into the corresponding character.
-- Templates
-  - Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
+  - Formatting
+    - Want to right justify, left justify, or center? Coming soon!
+
+  - Color codes
+    - Add in color chips alongside letters, numbers, and symbols to create unique combinations
+
+  - Raw Mode
+    - Vestaboard supports a "list of lists" to send a message. This will allow you to precisely place characters exactly where you want them. Upcoming support to pass in a 6 x 22 array to place characters, complete with conversion from letters, numbers, and symbols into the corresponding character.
+
+  - Templates
+    - Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
+
 ***
 ## Repository Info
-#### Needs:
-- [ ] Additional formatting for 6 x 22 list of lists for sending custom messages
-- [ ] Unit and other tests inside the `/test` folder
-- [ ] Suggestions or ideas for improvement are always welcome!
+### Needs
+  - [] Additional formatting for 6 x 22 list of lists for sending custom messages
+  - [] Unit and other tests inside the `/test` folder
+  - [] Suggestions or ideas for improvement are always welcome!
 
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
