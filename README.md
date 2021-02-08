@@ -13,8 +13,6 @@
 
 This is a lightweight and unassuming wrapper for the Vestaboard API.
 
-You belong here :heart:
-
 By [Shane Sutro] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
 ***
 ### Official API
@@ -117,5 +115,7 @@ Thanks!
 
 #### [Shane Sutro]
 
+You belong here :heart:
+
 [open an issue]: https://github.com/SonicRift/Vestaboard/issues
-[Shane Sutro]: (https://github.com/SonicRift)
+[Shane Sutro]: https://github.com/SonicRift
