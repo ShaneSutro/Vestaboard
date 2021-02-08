@@ -1,5 +1,4 @@
-"""
-Vestaboard Module
+"""Vestaboard Module
 
 Board - Class
 Installable - Class
