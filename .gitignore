@@ -9,5 +9,11 @@
 /*.egg-info
 /*.egg
 
+#Credential files
 credentials.txt
+
+#Other files
 test.py
+
+#VS Code Files
+.vscode/
