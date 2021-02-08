@@ -46,7 +46,10 @@ class Installable:
     self.apiKey = apiKey
     self.apiSecret = apiSecret
     self.saveCredentials = saveCredentials
-    if saveCredentials:
+    if not apiKey or not apiSecret:
+      raise ValueError('Installables must have an apiKey and apiSecret parameter.')
+    
+    if saveCredentials and apiKey and apiSecret:
       with open('./credentials.txt', 'w') as cred:
         cred.write(apiKey + '\n')
         cred.write(apiSecret + '\n')
