@@ -1,4 +1,5 @@
-"""Vestaboard Module
+"""
+Vestaboard Module
 
 Board - Class
 Installable - Class
@@ -9,14 +10,15 @@ import vestaboard.vbUrls as vbUrls
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
-    """Returns an instance of Board().
+    """
+    Returns an instance of Board().
+
     Keyword arguments:
     Installable - an instance of Installable()
     apiKey - your Vestaboard API Key
     apiSecret - your Vestaboard API Secret
     subscriptionId - your Subscription ID (this can be obtained for you by creating a new Installable() instance)
     """
-
     if not Installable:  #check for cred file
       if (not apiKey or not apiSecret or not subscriptionId):
         try:
@@ -51,6 +53,7 @@ class Board:
 class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
     """Returns an instance of Installable()
+
     You can pass this into an instance of Board() as the first keyword argument.
     Keyword arguments:
     apiKey: String (required) - your Vestaboard API Key
@@ -58,7 +61,6 @@ class Installable:
     getSubscripion: Bool (optional, default True) - If you already have your subscription ID, you may pass False into this method
     saveCredentials: Bool (options, default True) - Choose whether or not to store your API keys in the home directory
     """
-
     self.apiKey = apiKey
     self.apiSecret = apiSecret
     self.saveCredentials = saveCredentials
