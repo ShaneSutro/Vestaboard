@@ -15,6 +15,14 @@ Once created, you will need to store your API Key and API Secret - you'll need t
 
 ### Using this package
 
+#### Installation
+
+- Download and install into your project file
+- Via `pip`
+`pip install vestaboard`
+
+#### Usage
+
 This package will simplify the process of connecting your code to Vestaboard's API.
 By default, the module will store your API Key, API Secret, and Subscriber ID in a .txt file in the root folder of the project.
 If you do _not_ want to store this, pass `saveCredentials=False` into the creation of an `Installable`. Alternatively, you may skip creating an `Installable` alltogether if you already know your Subscription ID (which you can get from Vestaboards official portal if you'd like to skip this step).
