@@ -52,7 +52,8 @@ class Board:
 
 class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
-    """Returns an instance of Installable()
+    """
+    Returns an instance of Installable()
 
     You can pass this into an instance of Board() as the first keyword argument.
     Keyword arguments:
