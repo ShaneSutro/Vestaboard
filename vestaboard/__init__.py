@@ -1,16 +1,15 @@
 """Vestaboard Module
+
 Board - Class
 Installable - Class
 """
 import requests
 import vestaboard.formatter as formatter
-import vestaboard.characters as characters
 import vestaboard.vbUrls as vbUrls
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
     """Returns an instance of Board().
-
     Keyword arguments:
     Installable - an instance of Installable()
     apiKey - your Vestaboard API Key
@@ -53,7 +52,6 @@ class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
     """Returns an instance of Installable()
     You can pass this into an instance of Board() as the first keyword argument.
-
     Keyword arguments:
     apiKey: String (required) - your Vestaboard API Key
     apiSecret: String (required) - your Vestaboard API Secret
