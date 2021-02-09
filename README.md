@@ -91,6 +91,20 @@ vboard = vestaboard.Board(installable)
 vboard.post('Everything you can imagine is real.')
 ```
 
+The `.post()` method supports all letters and symbols that Vestaboard supports, including all letters, numbers, and symbols.
+In addition, you may pass in a character code in curly brackets to represent a single character or a color tile. You can view a reference of character and color codes on [Vestaboard's official website by clicking here.](https://docs.vestaboard.com/characters)
+Vestaboard's API currently strips leading and trailing spaces from lines - *this includes the `{0}` character (the black tile)*. To precisely place characters, use the `.raw()` method (coming soon).
+
+```python
+import vestaboard
+
+installable = vestaboard.Installable('your_api_key', 'your_api_secret')
+vboard = vestaboard.Board(installable)
+
+vboard.post('Triage Status\n\n{63}High -3{0}{0}items\n {65}Med -18 items\n{66}Low -88 items')
+```
+![Board with color tiles example](../media/vbcolors.png?raw=true)
+
 ## Upcoming Support
 -   Formatting
     -   Want to right justify, left justify, or center? Coming soon!
