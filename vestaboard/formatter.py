@@ -10,10 +10,10 @@ class Formatter:
       raise Exception('Your text contains one or more characters that the Vestaboard does not support.')
     return {'text': text}
 
-  def _raw(self, charList):
+  def _raw(charList):
     return {'characters': charList}
 
-  def _isValid(self, inputString):
+  def _isValid(inputString):
     inputString = inputString.lower()
     test = "^[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?° ]*(?:\{[0-9]+\})*[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?° ]*$"
 
