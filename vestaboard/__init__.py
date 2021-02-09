@@ -55,13 +55,13 @@ class Board:
   def raw(self, charList):
     if len(charList) != 6:
       raise ValueError('Input must be a list containing 6 lists, each representing a line on the board.')
-    for i in range(0, len(charList)):
-      if type(charList[i]) is not list:
-        raise ValueError(f'Nested items must be lists, not {type(charList[i])}.')
-      if len(charList[i]) != 22:
-        raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(charList[i])} characters long.')
-      for j in range(0, 22):
-        if type(charList[i][j]) is not int:
+    for i, row in enumerate(charList):
+      if not isinstance(row, list):
+        raise ValueError(f'Nested items must be lists, not {type(row)}.')
+      if len(row) != 22:
+        raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long.')
+      for j, char in enumerate(row):
+        if not isinstance(char, int):
           raise ValueError('Nested lists must contain numbers only.')
     headers = {
         "X-Vestaboard-Api-Key" : self.apiKey,
