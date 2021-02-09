@@ -1,3 +1,4 @@
+import pytest
 from vestaboard.formatter import Formatter
 
 validCharacters = [
@@ -14,28 +15,42 @@ validCharactersResult= {
 }
 
 def test_standard_formatting():
-    assert Formatter._standard('Love is all you need') == {'text': 'Love is all you need'}, 'Should return a dict with a "text" key and the passed in value.'
+    assert Formatter()._standard('Love is all you need') == {'text': 'Love is all you need'}, 'Should return a dict with a "text" key and the passed in value.'
 
 def test_raw_formatting():
-    assert Formatter._raw(validCharacters) == validCharactersResult, 'Should return a dict with a "characters" key and the passed in list of lists as the value.'
+    assert Formatter()._raw(validCharacters) == validCharactersResult, 'Should return a dict with a "characters" key and the passed in list of lists as the value.'
 
 def test_character_conversion_by_letter():
-    assert Formatter.convert('test') == [20, 5, 19, 20], 'Should convert by letter into a list.'
+    assert Formatter().convert('test') == [20, 5, 19, 20], 'Should convert by letter into a list.'
+
+def test_character_conversion_with_invalid_characters_fails():
+    with pytest.raises(Exception):
+        Formatter().convert('^*^')
 
 def test_character_ignores_case():
-    Formatter.convert('tHiS Is A sCHEdulEd TESt')
+    Formatter().convert('tHiS Is A sCHEdulEd TESt')
 
 def test_character_conversion_by_word():
-    assert Formatter.convert('test message', byWord=True) == [[20, 5, 19, 20], [13, 5, 19, 19, 1, 7, 5]], 'Should return a list with nested lists - each nested list should contain the character codes.'
+    assert Formatter().convert('test message', byWord=True) == [[20, 5, 19, 20], [13, 5, 19, 19, 1, 7, 5]], 'Should return a list with nested lists - each nested list should contain the character codes.'
+
+def test_word_conversion_with_invalid_characters_fails():
+    with pytest.raises(Exception):
+        Formatter().convert('test message^*', byWord=True)
 
 def test_convert_line_with_centering():
-    assert len(Formatter.convertLine('test message')) == 22, 'Should return a list with 22 elements'
-    assert Formatter.convertLine('test message') == [0, 0, 0, 0, 0, 20, 5, 19, 20, 0, 13, 5, 19, 19, 1, 7, 5, 0, 0, 0, 0, 0], 'Should add padding to reach 22 characters'
+    assert len(Formatter().convertLine('test message')) == 22, 'Should return a list with 22 elements'
+    assert Formatter().convertLine('test message') == [0, 0, 0, 0, 0, 20, 5, 19, 20, 0, 13, 5, 19, 19, 1, 7, 5, 0, 0, 0, 0, 0], 'Should add padding to reach 22 characters'
 
 def test_convert_line_left_justified():
-    assert len(Formatter.convertLine('Oh hi!', left=True)) == 22, 'Should return a list with 22 elements'
-    assert Formatter.convertLine('Oh hi!', left=True) == [15, 8, 0, 8, 9, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Should left justify up to 22 characters'
+    assert len(Formatter().convertLine('Oh hi!', left=True)) == 22, 'Should return a list with 22 elements'
+    assert Formatter().convertLine('Oh hi!', left=True) == [15, 8, 0, 8, 9, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Should left justify up to 22 characters'
 
 def test_convert_line_right_justified():
-    assert len(Formatter.convertLine('Oh hi!', right=True)) == 22, 'Should return a list with 22 elements'
-    assert Formatter.convertLine('Oh hi!', right=True) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 0, 8, 9, 37], 'Should left justify up to 22 characters'
+    assert len(Formatter().convertLine('Oh hi!', right=True)) == 22, 'Should return a list with 22 elements'
+    assert Formatter().convertLine('Oh hi!', right=True) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 0, 8, 9, 37], 'Should left justify up to 22 characters'
+
+def test_valid_characters_should_pass():
+    assert Formatter()._isValid('abcdefghijklmnopqrstuvwxyz1234567890 !@#$()-+&=;:"%,./?°') == True
+
+def test_invalid_characters_should_fail():
+    assert Formatter()._isValid('^*') == False

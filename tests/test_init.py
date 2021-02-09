@@ -48,6 +48,17 @@ def test_raw_input_fails_if_nested_lists_not_contain_all_numbers():
     with pytest.raises(ValueError):
         vestaboard.Board().raw(invalidRawChar)
 
+def test_valid_standard_input_does_not_fail():
+    create_fake_cred_file()
+    vestaboard.Board().post('abcdefghijklmnopqrstuvwxyz1234567890 !@#$()-+&=;:"%,./?°')
+    remove_fake_cred_file()
+
+def test_invalid_standard_input_fails():
+    with pytest.raises(Exception):
+        create_fake_cred_file()
+        vestaboard.Board().post('^')
+        remove_fake_cred_file()
+
 def test_valid_raw_input_does_not_fail():
     create_fake_cred_file()
     vestaboard.Board().raw(validRawChar)

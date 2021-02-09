@@ -143,7 +143,7 @@ If converting a string, use the `.convert()` method. By default, `.convert()` wi
 ```python
 from vestaboard.formatter import Formatter
 
-Formatter.convert('Oh hi!')
+Formatter().convert('Oh hi!')
 # Returns [15, 8, 0, 8, 9, 37]
 ```
 
@@ -152,7 +152,7 @@ To split by word, pass in the argument `byWord=True` along with your input strin
 ```python
 from vestaboard.formatter import Formatter
 
-Formatter.convert('Oh hi!', byWord=True)
+Formatter().convert('Oh hi!', byWord=True)
 # Returns [[15, 8], [8, 9, 37]]
 ```
 
@@ -162,7 +162,7 @@ If you'd like to convert an entire line at once, use the `.convertLine()` method
 ```python
 from vestaboard.formatter import Formatter
 
-Formatter.convertLine('Happy Birthday!')
+Formatter().convertLine('Happy Birthday!')
 # Returns [0, 0, 0, 8, 1, 16, 16, 25, 0, 2, 9, 18, 20, 8, 4, 1, 25, 37, 0, 0, 0, 0]
 ```
 
