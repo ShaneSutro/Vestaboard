@@ -62,7 +62,7 @@ class Board:
         raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long.')
       for j, char in enumerate(row):
         if not isinstance(char, int):
-          raise ValueError('Nested lists must contain numbers only.')
+          raise ValueError(f'Nested lists must contain numbers only - check row {i} char {j} (0 indexed)')
     headers = {
         "X-Vestaboard-Api-Key" : self.apiKey,
         "X-Vestaboard-Api-Secret" : self.apiSecret

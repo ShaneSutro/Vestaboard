@@ -81,7 +81,9 @@ Currently this module supports the following:
 
 -   Creating an instance of Board, either by passing in an  Installable or by passing in an API Key, API Secret _and_ Subscription ID
 
-The board currently has 1 method available, the `.post()` method, which takes in a string and sends it to the board:
+The board currently has 2 methods available, the `.post()` method, which takes in a string and sends it to the board, and the `.raw()` method, which allows you to place characters precisely where you'd like them.
+
+### Post
 
 ```python
 import vestaboard
@@ -94,7 +96,7 @@ vboard.post('Everything you can imagine is real.')
 
 The `.post()` method supports all letters and symbols that Vestaboard supports, including all letters, numbers, and symbols.
 In addition, you may pass in a character code in curly brackets to represent a single character or a color tile. You can view a reference of character and color codes on [Vestaboard's official website by clicking here.](https://docs.vestaboard.com/characters)
-Vestaboard's API currently strips leading and trailing spaces from lines - _this includes the `{0}` character (the black tile)_. To precisely place characters, use the `.raw()` method (coming soon).
+Vestaboard's API currently strips leading and trailing spaces from lines - _this includes the `{0}` character (the black tile)_. To precisely place characters, use the `.raw()` method (see below).
 
 ```python
 import vestaboard
@@ -105,6 +107,27 @@ vboard = vestaboard.Board(installable)
 vboard.post('Triage Status\n\n{63}High -3{0}{0}items\n {65}Med -18 items\n{66}Low -88 items')
 ```
 ![Board with color tiles example](../media/vbcolors.png?raw=true)
+
+### Raw
+
+```python
+import vestaboard
+
+characters = [
+    [63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68, 69, 63],
+    [64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64],
+    [65, 0, 0, 0, 8, 1, 16, 16, 25, 0, 2, 9 18, 20, 8, 4, 1, 25, 0, 0, 0, 65],
+    [66, 0, 0, 0, 0, 0, 0, 0, 13, 9, 14, 1, 20, 15, 37, 0, 0, 0, 0, 0, 0, 66],
+    [67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67],
+    [68, 69, 63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68]
+]
+
+installable = vestaboard.Installable('your_api_key', 'your_api_secret')
+vboard = vestaboard.Board(installable)
+
+vboard.raw(characters)
+```
+
 
 ## Upcoming Support
 -   Formatting
@@ -118,6 +141,8 @@ vboard.post('Triage Status\n\n{63}High -3{0}{0}items\n {65}Med -18 items\n{66}Lo
 
 -   Templates
     -   Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
+
+
 
 ***
 ## Repository Info
