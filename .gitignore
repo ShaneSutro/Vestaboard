@@ -1,5 +1,6 @@
 # Compiled python modules
 *.pyc
+__pycache__
 
 #Virtual Environment
 /venv/
@@ -11,6 +12,9 @@
 #Python egg metadata
 /*.egg-info
 /*.egg
+
+#Mac Files
+.DS_Store
 
 #Credential files
 credentials.txt
