@@ -7,7 +7,7 @@ Board - Class
 Installable - Class
 """
 import requests
-import vestaboard.formatter as formatter
+from vestaboard.formatter import Formatter
 import vestaboard.vbUrls as vbUrls
 
 class Board:
@@ -47,7 +47,7 @@ class Board:
         "X-Vestaboard-Api-Key" : self.apiKey,
         "X-Vestaboard-Api-Secret" : self.apiSecret
     }
-    finalText = formatter.standard(text)
+    finalText = Formatter._standard(text)
     r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
     print(r.status_code)
     print(r.text)
@@ -67,7 +67,7 @@ class Board:
         "X-Vestaboard-Api-Key" : self.apiKey,
         "X-Vestaboard-Api-Secret" : self.apiSecret
     }
-    finalText = formatter.raw(charList)
+    finalText = Formatter._raw(charList)
     r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
     print(r.status_code)
     print(r.text)

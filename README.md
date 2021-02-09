@@ -110,6 +110,8 @@ vboard.post('Triage Status\n\n{63}High -3{0}{0}items\n {65}Med -18 items\n{66}Lo
 
 ### Raw
 
+The `.raw()` method allows you to specify exactly where each tile should be on the board. `.raw()` takes an argument of a list of lists (a 6 x 22 array) where each character has been converted into its corresponding character code.
+
 ```python
 import vestaboard
 
@@ -127,27 +129,54 @@ vboard = vestaboard.Board(installable)
 
 vboard.raw(characters)
 ```
+![Board with raw input example](../media/rawexample.png?raw=true)
 
+To assist with character conversion, use the `Formatter` class.
+The `Formatter` has two public helper options:
+
+-   `.convert()`
+-   `.convertLine()`
+
+#### Convert
+If converting a string, use the `.convert()` method. By default, `.convert()` will split by letter and return an array of character codes corresponding to the string you passed in:
+
+```python
+from vestaboard.formatter import Formatter
+
+Formatter.convert('Oh hi!')
+# Returns [15, 8, 0, 8, 9, 37]
+```
+
+To split by word, pass in the argument `byWord=True` along with your input string:
+
+```python
+from vestaboard.formatter import Formatter
+
+Formatter.convert('Oh hi!', byWord=True)
+# Returns [[15, 8], [8, 9, 37]]
+```
+
+#### Convert Line
+If you'd like to convert an entire line at once, use the `.convertLine()` method. `.convertLine()` centers text by default. To left justify or right justify, pass `left=True` or `right=True`.
+
+```python
+from vestaboard.formatter import Formatter
+
+Formatter.convertLine('Happy Birthday!')
+# Returns [0, 0, 0, 8, 1, 16, 16, 25, 0, 2, 9, 18, 20, 8, 4, 1, 25, 37, 0, 0, 0, 0]
+```
 
 ## Upcoming Support
 -   Formatting
-    -   Want to right justify, left justify, or center? Coming soon!
-
--   Color codes
-    -   Add in color chips alongside letters, numbers, and symbols to create unique combinations
-
--   Raw Mode
-    -   Vestaboard supports a "list of lists" to send a message. This will allow you to precisely place characters exactly where you want them. Upcoming support to pass in a 6 x 22 array to place characters, complete with conversion from letters, numbers, and symbols into the corresponding character.
+    -   Want to right justify, left justify, or center the entire content? Coming soon!
 
 -   Templates
     -   Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
 
-
-
 ***
 ## Repository Info
 ### Needs
--   Additional formatting for 6 x 22 list of lists for sending custom messages
+-   Conversion from string to list of lists for `.raw()` method
 -   Unit and other tests inside the `/test` folder
 -   Suggestions or ideas for improvement are always welcome!
 
