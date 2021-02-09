@@ -117,10 +117,10 @@ import vestaboard
 
 characters = [
     [63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68, 69, 63],
-    [64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64],
-    [65, 0, 0, 0, 8, 1, 16, 16, 25, 0, 2, 9 18, 20, 8, 4, 1, 25, 0, 0, 0, 65],
-    [66, 0, 0, 0, 0, 0, 0, 0, 13, 9, 14, 1, 20, 15, 37, 0, 0, 0, 0, 0, 0, 66],
-    [67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67],
+    [64,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 64],
+    [65,  0,  0,  0,  8,  1, 16, 16, 25,  0,  2,  9, 18, 20,  8,  4,  1, 25,  0,  0,  0, 65],
+    [66,  0,  0,  0,  0,  0,  0,  0, 13,  9, 14,  1, 20, 15, 37,  0,  0,  0,  0,  0,  0, 66],
+    [67,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 67],
     [68, 69, 63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68, 69, 63, 64, 65, 66, 67, 68]
 ]
 
@@ -137,7 +137,7 @@ The `Formatter` has two public helper options:
 -   `.convert()`
 -   `.convertLine()`
 
-#### Convert
+### Convert
 If converting a string, use the `.convert()` method. By default, `.convert()` will split by letter and return an array of character codes corresponding to the string you passed in:
 
 ```python
@@ -156,7 +156,7 @@ Formatter.convert('Oh hi!', byWord=True)
 # Returns [[15, 8], [8, 9, 37]]
 ```
 
-#### Convert Line
+### Convert Line
 If you'd like to convert an entire line at once, use the `.convertLine()` method. `.convertLine()` centers text by default. To left justify or right justify, pass `left=True` or `right=True`.
 
 ```python

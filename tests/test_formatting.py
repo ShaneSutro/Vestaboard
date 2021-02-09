@@ -35,7 +35,7 @@ def test_convert_line_with_centering():
 def test_convert_line_left_justified():
     assert len(Formatter.convertLine('Oh hi!', left=True)) == 22, 'Should return a list with 22 elements'
     assert Formatter.convertLine('Oh hi!', left=True) == [15, 8, 0, 8, 9, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Should left justify up to 22 characters'
-    
+
 def test_convert_line_right_justified():
     assert len(Formatter.convertLine('Oh hi!', right=True)) == 22, 'Should return a list with 22 elements'
     assert Formatter.convertLine('Oh hi!', right=True) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 0, 8, 9, 37], 'Should left justify up to 22 characters'
