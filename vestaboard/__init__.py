@@ -52,6 +52,26 @@ class Board:
     print(r.status_code)
     print(r.text)
 
+  def raw(self, charList):
+    if len(charList) != 6:
+      raise ValueError('Input must be a list containing 6 lists, each representing a line on the board.')
+    for i in range(0, len(charList)):
+      if type(charList[i]) is not list:
+        raise ValueError(f'Nested items must be lists, not {type(charList[i])}.')
+      if len(charList[i]) != 22:
+        raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(charList[i])} characters long.')
+      for j in range(0, 22):
+        if type(charList[i][j]) is not int:
+          raise ValueError('Nested lists must contain numbers only.')
+    headers = {
+        "X-Vestaboard-Api-Key" : self.apiKey,
+        "X-Vestaboard-Api-Secret" : self.apiSecret
+    }
+    finalText = formatter.raw(charList)
+    r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
+    print(r.status_code)
+    print(r.text)
+
 class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
     """
