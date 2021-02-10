@@ -82,6 +82,7 @@ class Installable:
     apiKey: String (required) - your Vestaboard API Key
     apiSecret: String (required) - your Vestaboard API Secret
     getSubscripion: Bool (optional, default True) - If you already have your subscription ID, you may pass False into this method
+
     saveCredentials: Bool (options, default True) - Choose whether or not to store your API keys in the home directory
     """
     self.apiKey = apiKey
