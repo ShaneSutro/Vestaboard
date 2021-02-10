@@ -51,6 +51,9 @@ def test_raw_input_fails_if_nested_lists_not_contain_all_numbers():
 def test_valid_standard_input_does_not_fail():
     create_fake_cred_file()
     vestaboard.Board().post('abcdefghijklmnopqrstuvwxyz1234567890 !@#$()-+&=;:"%,./?°')
+    vestaboard.Board().post('Triage Status:\n\n{63}Red - 24 files')
+    vestaboard.Board().post('Character code at end {23}')
+    vestaboard.Board().post('{64} Character code at beginning')
     remove_fake_cred_file()
 
 def test_invalid_standard_input_fails():
