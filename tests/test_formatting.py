@@ -46,12 +46,12 @@ def test_convert_line_with_centering():
     assert Formatter().convertLine('test message') == [0, 0, 0, 0, 0, 20, 5, 19, 20, 0, 13, 5, 19, 19, 1, 7, 5, 0, 0, 0, 0, 0], 'Should add padding to reach 22 characters'
 
 def test_convert_line_left_justified():
-    assert len(Formatter().convertLine('Oh hi!', left=True)) == 22, 'Should return a list with 22 elements'
-    assert Formatter().convertLine('Oh hi!', left=True) == [15, 8, 0, 8, 9, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Should left justify up to 22 characters'
+    assert len(Formatter().convertLine('Oh hi!', justify='left')) == 22, 'Should return a list with 22 elements'
+    assert Formatter().convertLine('Oh hi!', justify='left') == [15, 8, 0, 8, 9, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Should left justify up to 22 characters'
 
 def test_convert_line_right_justified():
-    assert len(Formatter().convertLine('Oh hi!', right=True)) == 22, 'Should return a list with 22 elements'
-    assert Formatter().convertLine('Oh hi!', right=True) == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 0, 8, 9, 37], 'Should left justify up to 22 characters'
+    assert len(Formatter().convertLine('Oh hi!', justify='right')) == 22, 'Should return a list with 22 elements'
+    assert Formatter().convertLine('Oh hi!', justify='right') == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 0, 8, 9, 37], 'Should left justify up to 22 characters'
 
 def test_valid_characters_should_pass():
     assert Formatter()._isValid('abcdefghijklmnopqrstuvwxyz1234567890 !@#$()-+&=;:"%,./?°') == True
@@ -103,6 +103,22 @@ def test_formatter_accepts_padding_colors():
     t3 = Formatter().convertLine('yellow', color='yellow')
     e3 = [65, 65, 65, 65, 65, 65, 65, 65, 25, 5, 12, 12, 15, 23, 65, 65, 65, 65, 65, 65, 65, 65]
 
+    assert t1 == e1
+    assert t2 == e2
+    assert t3 == e3
+
 def test_formatter_fails_invalid_colors():
     with pytest.raises(KeyError):
         Formatter().convertLine('error', color='pink')
+
+def test_space_buffer_adds_spaces_where_appropriate():
+    t1 = Formatter().convertLine('center', justify='center', spaceBuffer=True, color='white')
+    t2 = Formatter().convertLine('left', justify='left', spaceBuffer=True, color='white')
+    t3 = Formatter().convertLine('right', justify='right', spaceBuffer=True, color='white')
+    e1 = [69, 69, 69, 69, 69, 69, 69, 0, 3, 5, 14, 20, 5, 18, 0, 69, 69, 69, 69, 69, 69, 69]
+    e2 = [12, 5, 6, 20, 0, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69]
+    e3 = [69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 69, 0, 18, 9, 7, 8, 20]
+
+    assert t1 == e1, 'Should add spacing on both sides of centered text'
+    assert t2 == e2, 'Should add spacing to the right side of left-justified text'
+    assert t3 == e3, 'Should add spacing to the left side of right-justified text'

@@ -54,12 +54,17 @@ class Formatter:
 
     return converted
 
-  def convertLine(self, inputString, center=True, left=False, right=False, color=' ', spaceBuffer=False):
+  def convertLine(self, inputString, justify='center', color=' ', spaceBuffer=False):
     if not self._isValid(inputString):
       raise Exception('Your text contains one or more characters that the Vestaboard does not support.')
     numCharacterCodes = self._numCharacterCodes(inputString)
     if spaceBuffer:
-      inputString = ' ' + inputString + ' '
+      if justify == 'left':
+        inputString = inputString + ' '
+      elif justify == 'right':
+        inputString = ' ' + inputString
+      else:
+        inputString = ' ' + inputString + ' '
     inputString = inputString.lower()
     if color != ' ':
       try:
@@ -69,11 +74,11 @@ class Formatter:
     converted = []
     if len(inputString) - numCharacterCodes > 22:
       raise Exception(f'Convert line method takes in a string less than or equal to 22 characters - string passed in was {len(inputString)} characters. Reduce size and try again (remember that setting spaceBuffer=True increases your line size by 2).')
-    if left:
+    if justify == 'left':
       inputString = inputString.ljust(22 + numCharacterCodes, '^')
-    elif right:
+    elif justify == 'right':
       inputString = inputString.rjust(22 + numCharacterCodes, '^')
-    elif center:
+    elif justify == 'center':
       inputString = inputString.center(22 + numCharacterCodes, '^')
     inputString = inputString.replace('^', color)
     skipTo = 0
