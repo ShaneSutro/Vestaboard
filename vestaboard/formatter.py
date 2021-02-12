@@ -21,7 +21,7 @@ class Formatter:
     test = "^(?:[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*(?:\{[0-9]+\})*[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*)*$"
 
     return bool(re.match(test, inputString))
-  
+
   @staticmethod
   def _getEmbeddedCharCodes(inputString):
     test = "\{[0-9]+\}+"
@@ -59,12 +59,7 @@ class Formatter:
       raise Exception('Your text contains one or more characters that the Vestaboard does not support.')
     numCharacterCodes = self._numCharacterCodes(inputString)
     if spaceBuffer:
-      if justify == 'left':
-        inputString = inputString + ' '
-      elif justify == 'right':
-        inputString = ' ' + inputString
-      else:
-        inputString = ' ' + inputString + ' '
+      inputString = self._addSpaceBuffer(inputString, justify)
     inputString = inputString.lower()
     if color != ' ':
       try:
@@ -74,13 +69,8 @@ class Formatter:
     converted = []
     if len(inputString) - numCharacterCodes > 22:
       raise Exception(f'Convert line method takes in a string less than or equal to 22 characters - string passed in was {len(inputString)} characters. Reduce size and try again (remember that setting spaceBuffer=True increases your line size by 2).')
-    if justify == 'left':
-      inputString = inputString.ljust(22 + numCharacterCodes, '^')
-    elif justify == 'right':
-      inputString = inputString.rjust(22 + numCharacterCodes, '^')
-    elif justify == 'center':
-      inputString = inputString.center(22 + numCharacterCodes, '^')
-    inputString = inputString.replace('^', color)
+    inputString = self._justifyContent(inputString, justify, numCharacterCodes, color)
+
     skipTo = 0
     for index, letter in enumerate(inputString):
       if index < skipTo:
@@ -96,3 +86,25 @@ class Formatter:
         converted.append(characters[letter])
 
     return converted
+
+  @staticmethod
+  def _addSpaceBuffer(inputString, justify):
+    if justify == 'left':
+      return inputString + ' '
+    elif justify == 'right':
+      return ' ' + inputString
+    else:
+      return ' ' + inputString + ' '
+
+  @staticmethod
+  def _justifyContent(inputString, justify, numCharacterCodes, color):
+    if justify == 'left':
+      inputString = inputString.ljust(22 + numCharacterCodes, '^')
+    elif justify == 'right':
+      inputString = inputString.rjust(22 + numCharacterCodes, '^')
+    elif justify == 'center':
+      inputString = inputString.center(22 + numCharacterCodes, '^')
+    inputString = inputString.replace('^', color)
+
+    return inputString
+
