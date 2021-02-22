@@ -66,7 +66,7 @@ class Board:
         "X-Vestaboard-Api-Secret" : self.apiSecret
     }
     finalText = Formatter()._raw(charList)
-    r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
+    requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
 
 class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
