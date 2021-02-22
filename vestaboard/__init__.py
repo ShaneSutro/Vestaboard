@@ -40,7 +40,7 @@ class Board:
     else:
       self.apiKey = Installable.apiKey
       self.apiSecret = Installable.apiSecret
-      self.subscriptionId = Installable.subscriptionId
+      self.subscriptionId = Installable.subscriptionId or subscriptionId
 
   def post(self, text):
     headers = {
@@ -49,8 +49,6 @@ class Board:
     }
     finalText = Formatter()._standard(text)
     r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
-    print(r.status_code)
-    print(r.text)
 
   def raw(self, charList):
     if len(charList) != 6:
@@ -69,8 +67,6 @@ class Board:
     }
     finalText = Formatter()._raw(charList)
     r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
-    print(r.status_code)
-    print(r.text)
 
 class Installable:
   def __init__(self, apiKey=False, apiSecret=False, getSubscription=True, saveCredentials=True):
@@ -97,6 +93,8 @@ class Installable:
         cred.close()
     if getSubscription:
       self.subscriptionId = self.get_subscriptions(saveCredentials)[0]['_id']
+    else:
+      self.subscriptionId = False
 
   def get_subscriptions(self, save=True):
     if not self.apiKey or not self.apiSecret:
@@ -111,7 +109,7 @@ class Installable:
         cred.write(response.json()['subscriptions'][0]['_id'] + '\n')
         cred.close()
 
-    print(response.json()['subscriptions'])
+    print('Subscription id(s):', response.json()['subscriptions'])
     return response.json()['subscriptions']
 
 def get_creds():

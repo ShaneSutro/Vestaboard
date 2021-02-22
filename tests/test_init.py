@@ -67,6 +67,15 @@ def test_valid_raw_input_does_not_fail():
     vestaboard.Board().raw(validRawChar)
     remove_fake_cred_file()
 
+def test_board_can_be_instantiated_with_an_installable_and_sub_id():
+    apiKey = 'fakeApiKey'
+    apiSecret = 'fakeApiSecret'
+    subId = 'fakeSubId'
+
+    i = vestaboard.Installable(apiKey=apiKey, apiSecret=apiSecret, getSubscription=False, saveCredentials=False)
+    vb = vestaboard.Board(i, subscriptionId=subId)
+    vb.post('Should not error')
+
 def create_fake_cred_file():
     with open(os.path.dirname(os.path.dirname(__file__)) + '/credentials.txt', 'w') as f:
         f.write('fakeApiKey\n')
