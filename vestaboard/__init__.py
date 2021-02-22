@@ -48,7 +48,7 @@ class Board:
         "X-Vestaboard-Api-Secret" : self.apiSecret
     }
     finalText = Formatter()._standard(text)
-    r = requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
+    requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
 
   def raw(self, charList):
     if len(charList) != 6:
