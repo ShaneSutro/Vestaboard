@@ -55,8 +55,10 @@ vboard.post('And just like that, we were off.')
 ```
 ![Board with plain text example](../media/basictext.png?raw=true)
 
-If you already have your Subscription ID or you do not want to store it, you can call `Board()` directly and pass your API Key, API Secret and Subscription ID directly. Note that if you choose to not store these credentials, you will need to provide them each time you call a method on a `Board`.
+If you already have your Subscription ID or you do not want to store it, you can call `Board()` directly and pass your API Key, API Secret and Subscription ID directly.
+Note that if you choose to not store these credentials, you will need to provide them each time you call a method on a `Board`.
 If you do choose to store them, they will be stored in a file called `credentials.txt` in the root directory of your project; remember to add `credentials.txt` to your `.gitignore` to avoid commiting your keys to GitHub. Alternatively, you may create a `config.py` file in your code and store the information there; again, add `config.py` to your `.gitignore`. Never upload API keys or API Secrets to a repository.
+You can also create an instance of Installable with only your API Key and API Secret, then provide a subscription ID directly when instantiating a new `Board` by setting `getSubscription=False` when instantiating the Installable.
 
 #### config.py
 ```python
@@ -79,8 +81,12 @@ vboard.post('Love is all you need')
 Currently this module supports the following:
 -   Creating an Installable object by passing in an API Key and API Secret
     -   This will find and store the Subscription ID for you
+    -   Passing `getSubscription=False` overrides this - if you set this to False, remember to pass in a Subscription ID when instantiating a new `Board`
 
--   Creating an instance of Board, either by passing in an  Installable or by passing in an API Key, API Secret _and_ Subscription ID
+-   Creating an instance of Board by passing in one of the following:
+    -   An Installable, instantiated with API Key and API Secret
+    -   By passing in an API Key, API Secret _and_ Subscription ID directly to `Board()`
+    -   By passing in an Installable where `getSubscription=False` and manually providing the Subscription ID to `Board`.
 
 The board currently has 2 methods available, the `.post()` method, which takes in a string and sends it to the board, and the `.raw()` method, which allows you to place characters precisely where you'd like them.
 
