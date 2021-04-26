@@ -164,7 +164,7 @@ Formatter().convert('Oh hi!', byWord=True)
 ```
 
 ### Convert Line
-If you'd like to convert an entire line at once, use the `.convertLine()` method. `.convertLine()` centers text by default. To left justify or right justify, pass `left=True` or `right=True`.
+If you'd like to convert an entire line at once, use the `.convertLine()` method. `.convertLine()` centers text by default. To left justify or right justify, pass `justify='left'` or `justify='right'`.
 
 ```python
 from vestaboard.formatter import Formatter
