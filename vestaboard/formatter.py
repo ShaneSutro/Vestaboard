@@ -18,7 +18,7 @@ class Formatter:
   @staticmethod
   def _isValid(inputString):
     inputString = inputString.lower()
-    test = r"^(?:[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*(?:\{[0-9]+\})*[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*)*$"
+    test = r"^(?:[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s]*(?:\{[0-9]+\})*[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s]*)*$"
 
     return bool(re.match(test, inputString))
 
