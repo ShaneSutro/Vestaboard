@@ -78,6 +78,9 @@ def test_with_text_between_character_codes():
 
 def test_invalid_characters_should_fail():
     assert Formatter()._isValid('^*') == False
+    assert Formatter()._isValid('{100}') == False
+    assert Formatter()._isValid('{sldkfn}') == False
+    assert Formatter()._isValid('{}') == False
 
 def test_regex_finds_valid_character_codes():
     actual = Formatter()._getEmbeddedCharCodes('{24}{1}')
