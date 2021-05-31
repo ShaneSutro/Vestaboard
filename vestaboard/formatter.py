@@ -18,13 +18,13 @@ class Formatter:
   @staticmethod
   def _isValid(inputString):
     inputString = inputString.lower()
-    test = "^(?:[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*(?:\{[0-9]+\})*[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*)*$"
+    test = r"^(?:[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*(?:\{[0-9]+\})*[A-Za-z0-9!@#$\(\)\-+&=;:'\"%,./?°\s ]*)*$"
 
     return bool(re.match(test, inputString))
 
   @staticmethod
   def _getEmbeddedCharCodes(inputString):
-    test = "\{[0-9]+\}+"
+    test = r"\{[0-9]+\}+"
 
     return re.findall(test, inputString)
 
