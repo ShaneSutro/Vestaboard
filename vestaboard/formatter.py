@@ -76,12 +76,12 @@ class Formatter:
       if index < skipTo:
         continue
       if letter == '{':
-        if inputString[index + 3] == '}': #two-digit character code like {63}
-          converted.append(int(inputString[index + 1: index + 3]))
-          skipTo = index + 4
-        elif inputString[index + 2] == '}': #one-digit character code like {4}
+        if inputString[index + 2] == '}': #one-digit character code like {4}
           converted.append(int(inputString[index + 1: index + 2]))
           skipTo = index + 3
+        elif inputString[index + 3] == '}': #two-digit character code like {63}
+          converted.append(int(inputString[index + 1: index + 3]))
+          skipTo = index + 4
       else:
         converted.append(characters[letter])
 
