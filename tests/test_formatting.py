@@ -53,6 +53,17 @@ def test_convert_line_right_justified():
     assert len(Formatter().convertLine('Oh hi!', justify='right')) == 22, 'Should return a list with 22 elements'
     assert Formatter().convertLine('Oh hi!', justify='right') == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 8, 0, 8, 9, 37], 'Should left justify up to 22 characters'
 
+def test_convert_line_with_22_characters_and_single_digit_code_at_end():
+    assert Formatter().convertLine(
+        "THU{0}{0}{0}{0}{0}{0}{63}{64}{65}{66}{67}{68}{69}{0}{0}{0}{0}{0}{0}"
+    ) == [20, 8, 21, 0, 0, 0, 0, 0, 0, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 0]
+
+
+def test_convert_line_with_22_characters_and_double_digit_code_at_end():
+    assert Formatter().convertLine(
+        "THU{0}{0}{0}{0}{0}{0}{63}{64}{65}{66}{67}{68}{69}{0}{0}{0}{0}{0}{60}"
+    ) == [20, 8, 21, 0, 0, 0, 0, 0, 0, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0, 60]
+
 def test_valid_characters_should_pass():
     assert Formatter()._isValid('abcdefghijklmnopqrstuvwxyz1234567890 !@#$()-+&=;:"%,./?°') == True
 
