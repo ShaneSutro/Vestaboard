@@ -12,12 +12,12 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SonicRift/Vestaboard)
 ![GitHub contributors](https://img.shields.io/github/contributors/SonicRift/Vestaboard)
 
-This is a lightweight and unassuming wrapper for the Vestaboard API.
+This is a lightweight and unassuming wrapper for the Vestaboard API. This project is open source and no payment is necessary to use - project donations are always appreciated to help fund this effort. If interested, you can [ view the donation page here.](https://shanesutro.com/donate)
 
 By [Shane Sutro][] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
 ***
 ### Official API
-You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/).
+You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/). *[Disclaimer](#repository-info-and-disclaimers)*
 
 ### Concepts
 According to Vestaboard's documentation, software that utilizes the API is considered an `installable`, and as such must be connected to a Vestaboard via an `installation`.
@@ -181,7 +181,7 @@ Formatter().convertLine('Happy Birthday!')
     -   Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
 
 ***
-## Repository Info
+## Repository Info and Disclaimers
 ### Needs
 -   Conversion from string to list of lists for `.raw()` method
 -   Unit and other tests inside the `/test` folder
@@ -192,7 +192,9 @@ Thanks!
 
 #### [Shane Sutro][]
 
-You belong here :heart:
+#### You belong here :heart:
+
+*Note: this project is maintaned by independent developers and is not sponsored by nor affiliated with Vestaboard, Inc. I am unable to make changes to their API or answer questions about the company, upcoming API support, or future-state plans. For questions regarding Vestaboard's API, privacy policies, or to request assistance with your board, [please get in touch with them here.](https://www.vestaboard.com/contact)*
 
 [open an issue]: https://github.com/SonicRift/Vestaboard/issues
 [shane sutro]: https://github.com/SonicRift
