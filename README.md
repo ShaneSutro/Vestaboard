@@ -15,6 +15,8 @@
 This is a lightweight and unassuming wrapper for the Vestaboard API. This project is open source and no payment is necessary to use - project donations are always appreciated to help fund this effort. If interested, you can [ view the donation page here.](https://shanesutro.com/donate)
 
 By [Shane Sutro][] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
+
+Thanks to @ClayClayClayClay for donating and supporting this project!
 ***
 ### Official API
 You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/). *[Disclaimer](#repository-info-and-disclaimers)*
