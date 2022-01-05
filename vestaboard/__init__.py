@@ -9,6 +9,7 @@ Installable - Class
 import requests
 from vestaboard.formatter import Formatter
 import vestaboard.vbUrls as vbUrls
+import warnings
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
@@ -50,17 +51,41 @@ class Board:
     finalText = Formatter()._standard(text)
     requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
 
-  def raw(self, charList):
-    if len(charList) != 6:
-      raise ValueError('Input must be a list containing 6 lists, each representing a line on the board.')
-    for i, row in enumerate(charList):
-      if not isinstance(row, list):
-        raise ValueError(f'Nested items must be lists, not {type(row)}.')
-      if len(row) != 22:
-        raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long.')
-      for j, char in enumerate(row):
-        if not isinstance(char, int):
-          raise ValueError(f'Nested lists must contain numbers only - check row {i} char {j} (0 indexed)')
+  def raw(self, charList, pad=None):
+    base_filler = [0] * 22
+    filler_needed = 6 - len(charList)
+    if not pad:
+      for i, row in enumerate(charList):
+        if not isinstance(row, list):
+          raise ValueError(f'Nested items must be lists, not {type(row)}.')
+        if len(row) != 22:
+          raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long.')
+        for j, char in enumerate(row):
+          if not isinstance(char, int):
+            warnings.warn(f'Nested lists must contain numbers only - check row {i} char {j} (0 indexed)')
+    elif len(charList) > 6:
+      charList = [charList[i] for i in range(6)]
+      raise ValueError(f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(charList)}. Only the first 6 will be shown.')
+    elif pad == 'below':
+      for i in range(filler_needed):
+        charList.append(base_filler)
+    elif pad == 'above':
+      for i in range(filler_needed):
+        charList.insert(0, base_filler)
+    elif pad == "":
+      # Interleave two lists together. If needed, excess of the longer list will be appened at the end.
+      # This can also be done with itertools.
+      interleaved = []
+      filler = [base_filler] * filler_needed
+
+      list1 = len(charList)
+      list2 = filler_needed
+      for i in range(max(list1, list2)):
+          if i < list1:
+              interleaved.append(charList[i])
+          if i < list2:
+              interleaved.append(filler[i])
+      charList = interleaved
     headers = {
         "X-Vestaboard-Api-Key" : self.apiKey,
         "X-Vestaboard-Api-Secret" : self.apiSecret
