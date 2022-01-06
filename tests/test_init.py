@@ -1,6 +1,7 @@
 import vestaboard
 import pytest
 import os
+import warnings
 
 validRawChar = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -134,10 +135,14 @@ def test_below_pad():
     assert small_board == expected
 
 def test_no_pad():
-
     small_board = return_valid_too_small_board()
     vb = create_fake_vestaboard()
     vb.raw(small_board)
+    # warnings.warn doesn't work with f strings
+    warning_message = 'you provided a list with length 6, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
+    # tests if specific warning type and message is raised
+    with pytest.warns(UserWarning, match=warning_message):
+        warnings.warn(warning_message, UserWarning)
     expected = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
@@ -152,6 +157,11 @@ def test_large_board():
     large_board = return_valid_too_large_board()
     vb = create_fake_vestaboard()
     vb.raw(large_board)
+    # warnings.warn doesn't work with f strings
+    warning_message = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(large_board)}. Only the first 6 will be shown.'
+    # tests if specific warning type and message is raised
+    with pytest.warns(UserWarning, match=warning_message):
+        warnings.warn(warning_message, UserWarning)
     expected = [
         [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
         [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
