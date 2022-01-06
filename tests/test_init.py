@@ -72,13 +72,12 @@ def test_valid_raw_input_does_not_fail():
     remove_fake_cred_file()
 
 def test_board_can_be_instantiated_with_an_installable_and_sub_id():
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    vb = create_fake_vestaboard()
     vb.post('Should not error')
+
 def test_odd_length_center_pad():
-    small_board = return_valid_small_board()
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    small_board = return_valid_too_small_board()
+    vb = create_fake_vestaboard()
     vb.raw(small_board, pad='center')
     expected = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -89,11 +88,11 @@ def test_odd_length_center_pad():
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
     assert small_board == expected
+
 def test_even_length_center_pad():
-    small_board = return_valid_small_board()
+    small_board = return_valid_too_small_board()
     small_board.append([0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0])
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    vb = create_fake_vestaboard()
     vb.raw(small_board, pad='center')
     expected = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -105,10 +104,10 @@ def test_even_length_center_pad():
 
     ]
     assert small_board == expected
+
 def test_above_pad():
-    small_board = return_valid_small_board()
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    small_board = return_valid_too_small_board()
+    vb = create_fake_vestaboard()
     vb.raw(small_board, pad='above')
     expected = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -121,9 +120,8 @@ def test_above_pad():
     assert small_board == expected
 
 def test_below_pad():
-    small_board = return_valid_small_board()
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    small_board = return_valid_too_small_board()
+    vb = create_fake_vestaboard()
     vb.raw(small_board, pad='below')
     expected = [
         [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
@@ -136,9 +134,9 @@ def test_below_pad():
     assert small_board == expected
 
 def test_no_pad():
-    small_board = return_valid_small_board()
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+
+    small_board = return_valid_too_small_board()
+    vb = create_fake_vestaboard()
     vb.raw(small_board)
     expected = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -151,9 +149,8 @@ def test_no_pad():
     assert small_board == expected
 
 def test_large_board():
-    large_board = return_valid_large_board()
-    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
-    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    large_board = return_valid_too_large_board()
+    vb = create_fake_vestaboard()
     vb.raw(large_board)
     expected = [
         [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
@@ -178,14 +175,19 @@ def remove_fake_cred_file():
     filePath = os.path.dirname(os.path.dirname(__file__))
     os.remove(filePath + '/credentials.txt')
 
-def return_valid_small_board():
+def create_fake_vestaboard():
+    i = vestaboard.Installable(apiKey=TEST_API_KEY, apiSecret=TEST_API_SECRET, getSubscription=False, saveCredentials=False)
+    vb = vestaboard.Board(i, subscriptionId=TEST_SUB_ID)
+    return vb
+
+def return_valid_too_small_board():
     return [
         [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
         [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0]
     ]
 
-def return_valid_large_board():
+def return_valid_too_large_board():
     return [
         [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
         [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

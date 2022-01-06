@@ -63,10 +63,10 @@ class Board:
         if not isinstance(char, int):
           raise ValueError(f'Nested lists must contain numbers only - check row {i} char {j} (0 indexed)')
     if len(charList) > 6:
-      del charList[6:]
-      # warnings.warn doesn't work with f strings
+        # warnings.warn doesn't work with f strings
       warning_message = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(charList)}. Only the first 6 will be shown.'
       warnings.warn(warning_message)
+      del charList[6:]
     elif pad == 'below':
       for i in range(filler_needed):
         charList.append(base_filler)
