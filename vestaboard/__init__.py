@@ -9,6 +9,7 @@ Installable - Class
 import requests
 from vestaboard.formatter import Formatter
 import vestaboard.vbUrls as vbUrls
+import warnings
 
 class Board:
   def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
@@ -50,9 +51,9 @@ class Board:
     finalText = Formatter()._standard(text)
     requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
 
-  def raw(self, charList):
-    if len(charList) != 6:
-      raise ValueError('Input must be a list containing 6 lists, each representing a line on the board.')
+  def raw(self, charList: list, pad=None):
+    base_filler = [0] * 22
+    filler_needed = 6 - len(charList)
     for i, row in enumerate(charList):
       if not isinstance(row, list):
         raise ValueError(f'Nested items must be lists, not {type(row)}.')
@@ -61,6 +62,26 @@ class Board:
       for j, char in enumerate(row):
         if not isinstance(char, int):
           raise ValueError(f'Nested lists must contain numbers only - check row {i} char {j} (0 indexed)')
+    if len(charList) > 6:
+      # warnings.warn doesn't work with f strings
+      warning_message = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(charList)}. Only the first 6 will be shown.'
+      warnings.warn(warning_message)
+      del charList[6:]
+    elif pad == 'below':
+      for i in range(filler_needed):
+        charList.append(base_filler)
+    elif pad == 'above':
+      for i in range(filler_needed):
+        charList.insert(0, base_filler)
+    else:
+      if pad == None:
+        # warnings.warn doesn't work with f strings
+        warning_message = f'you provided a list with length {len(charList)}, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
+        warnings.warn(warning_message)
+      while len(charList) < 6:
+        charList.append(base_filler)
+        if len(charList) < 6:
+          charList.insert(0, base_filler)
     headers = {
         "X-Vestaboard-Api-Key" : self.apiKey,
         "X-Vestaboard-Api-Secret" : self.apiSecret
