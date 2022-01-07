@@ -119,7 +119,7 @@ vboard.post('Triage Status\n\n{63}High -3{0}{0}items\n {65}Med -18 items\n{66}Lo
 
 ### Raw
 
-The `.raw()` method allows you to specify exactly where each tile should be on the board. `.raw()` takes an argument of a list of lists (a 6 x 22 array) where each character has been converted into its corresponding character code.
+The `.raw()` method allows you to specify exactly where each tile should be on the board. `.raw()` takes an argument of a list of lists (a 6 x 22 array) where each character has been converted into its corresponding character code, and an optional padding style (for less than 6 line lists).
 
 ```python
 import vestaboard
@@ -139,6 +139,13 @@ vboard = vestaboard.Board(installable)
 vboard.raw(characters)
 ```
 ![Board with raw input example](../media/rawexample.png?raw=true)
+
+### New in Version 1.0.0
+The `.raw()` method now supports padding and truncating if more or fewer than 6 lines are provided! By default, your text will be centered vertically on the board, but will generate a warning (if an odd number of lines are provided, the additional line will be at the bottom). Supress this warning by passing in `pad='center'`. When passing in greater than 6 lines, the board will only display the first 6 lines.
+
+You can also specify whether you'd like the padding to be added above or below your text by passing in `pad='top'` or `pad='bottom'` (only available when passing in < 6 lines). `pad='top'` will add padding above your text (your text will be at the bottom of the board), and `pad='bottom'` will add padding below your text (your text will be at the top of the board).
+
+---
 
 To assist with character conversion, use the `Formatter` class.
 The `Formatter` has two public helper options:
