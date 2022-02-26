@@ -76,10 +76,11 @@ class Board:
       elif pad == 'above':
         for i in range(filler_needed):
           charList.insert(0, base_filler)
-      elif pad == None:
-        # warnings.warn doesn't work with f strings
-        warning_message = f'you provided a list with length {len(charList)}, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
-        warnings.warn(warning_message)
+      else:
+        if pad == None:
+          # warnings.warn doesn't work with f strings
+          warning_message = f'you provided a list with length {len(charList)}, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
+          warnings.warn(warning_message)
         while len(charList) < 6:
           charList.append(base_filler)
           if len(charList) < 6:
