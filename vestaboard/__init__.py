@@ -69,20 +69,21 @@ class Board:
       warning_message = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(charList)}. Only the first 6 will be shown.'
       warnings.warn(warning_message)
       del charList[6:]
-    elif pad == 'below':
-      for i in range(filler_needed):
-        charList.append(base_filler)
-    elif pad == 'above':
-      for i in range(filler_needed):
-        charList.insert(0, base_filler)
-    elif pad == None and len(charList) < 6:
-      # warnings.warn doesn't work with f strings
-      warning_message = f'you provided a list with length {len(charList)}, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
-      warnings.warn(warning_message)
-      while len(charList) < 6:
-        charList.append(base_filler)
-        if len(charList) < 6:
+    elif len(charList) < 6:
+      if pad == 'below':
+        for i in range(filler_needed):
+          charList.append(base_filler)
+      elif pad == 'above':
+        for i in range(filler_needed):
           charList.insert(0, base_filler)
+      elif pad == None:
+        # warnings.warn doesn't work with f strings
+        warning_message = f'you provided a list with length {len(charList)}, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
+        warnings.warn(warning_message)
+        while len(charList) < 6:
+          charList.append(base_filler)
+          if len(charList) < 6:
+            charList.insert(0, base_filler)
     headers = {
         "X-Vestaboard-Api-Key" : self.apiKey,
         "X-Vestaboard-Api-Secret" : self.apiSecret
