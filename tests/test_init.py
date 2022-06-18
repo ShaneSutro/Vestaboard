@@ -137,42 +137,35 @@ def test_below_pad():
 def test_no_pad():
     small_board = return_valid_too_small_board()
     vb = create_fake_vestaboard()
-    vb.raw(small_board)
-    # warnings.warn doesn't work with f strings
-    warning_message = 'you provided a list with length 6, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
-    # tests if specific warning type and message is raised
-    with pytest.warns(UserWarning, match=warning_message):
-        warnings.warn(warning_message, UserWarning)
-    expected = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
-        [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]
-    assert small_board == expected
+    expected_warning = 'you provided a list with length 3, which has been centered vertically on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
+    with pytest.warns(UserWarning, match=expected_warning):
+        vb.raw(small_board)
+        expected = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+        assert small_board == expected
 
 def test_large_board():
     large_board = return_valid_too_large_board()
     vb = create_fake_vestaboard()
-    vb.raw(large_board)
-    # warnings.warn doesn't work with f strings
-    warning_message = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(large_board)}. Only the first 6 will be shown.'
-    # tests if specific warning type and message is raised
-    with pytest.warns(UserWarning, match=warning_message):
-        warnings.warn(warning_message, UserWarning)
-    expected = [
-        [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
-        [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
-        [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0]
-    ]
-    for i in large_board:
-        print(i)
-    assert large_board == expected
+    expected_warning = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(large_board)}. Only the first 6 will be shown.'
+
+    with pytest.warns(UserWarning, match=expected_warning):
+        vb.raw(large_board)
+        expected = [
+            [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 5, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0]
+        ]
+        assert large_board == expected
 
 def create_fake_cred_file():
     with open(os.path.dirname(os.path.dirname(__file__)) + '/credentials.txt', 'w') as f:
