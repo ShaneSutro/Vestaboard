@@ -44,13 +44,10 @@ class Formatter:
     if byWord:
       wordList = inputString.split(' ')
       for word in wordList:
-        convertedWord = []
-        for letter in word:
-          convertedWord.append(characters[letter])
+        convertedWord = self._convertLoop(word);
         converted.append(convertedWord)
     elif byLetter:
-      for letter in inputString:
-        converted.append(characters[letter])
+      converted += self._convertLoop(inputString)
 
     return converted
 
@@ -71,6 +68,13 @@ class Formatter:
       raise Exception(f'Convert line method takes in a string less than or equal to 22 characters - string passed in was {len(inputString)} characters. Reduce size and try again (remember that setting spaceBuffer=True increases your line size by 2).')
     inputString = self._justifyContent(inputString, justify, numCharacterCodes, color)
 
+    converted = self._convertLoop(inputString)
+
+    return converted
+
+  @staticmethod
+  def _convertLoop(inputString):
+    converted = []
     skipTo = 0
     for index, letter in enumerate(inputString):
       if index < skipTo:
@@ -86,6 +90,7 @@ class Formatter:
         converted.append(characters[letter])
 
     return converted
+
 
   @staticmethod
   def _addSpaceBuffer(inputString, justify):
