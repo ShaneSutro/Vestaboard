@@ -1,7 +1,6 @@
 import vestaboard
 import pytest
 import os
-import warnings
 
 validRawChar = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
