@@ -39,8 +39,8 @@ Once created, you will need to store your API Key and API Secret - you'll need t
 
 #### Installation
 
-- Download and install into your project file
-- Via `pip`:
+  - Download and install into your project file
+  - Via `pip`:
 
 `pip3 install vestaboard`
 _Note: if using a virtual environment, use `pip` instead of `pip3`_
@@ -95,15 +95,14 @@ vboard.post('Love is all you need')
 
 Currently this module supports the following:
 
-- Creating an Installable object by passing in an API Key and API Secret
+  - Creating an Installable object by passing in an API Key and API Secret
+    - This will find and store the Subscription ID for you
+    - Passing `getSubscription=False` overrides this - if you set this to False, remember to pass in a Subscription ID when instantiating a new `Board`
 
-  - This will find and store the Subscription ID for you
-  - Passing `getSubscription=False` overrides this - if you set this to False, remember to pass in a Subscription ID when instantiating a new `Board`
-
-- Creating an instance of Board by passing in one of the following:
-  - An Installable, instantiated with API Key and API Secret
-  - By passing in an API Key, API Secret _and_ Subscription ID directly to `Board()`
-  - By passing in an Installable where `getSubscription=False` and manually providing the Subscription ID to `Board`.
+  - Creating an instance of Board by passing in one of the following:
+    - An Installable, instantiated with API Key and API Secret
+    - By passing in an API Key, API Secret _and_ Subscription ID directly to `Board()`
+    - By passing in an Installable where `getSubscription=False` and manually providing the Subscription ID to `Board`.
 
 The board currently has 2 methods available, the `.post()` method, which takes in a string and sends it to the board, and the `.raw()` method, which allows you to place characters precisely where you'd like them.
 
@@ -168,8 +167,8 @@ You can also specify whether you'd like the padding to be added above or below y
 To assist with character conversion, use the `Formatter` class.
 The `Formatter` has two public helper options:
 
-- `.convert()`
-- `.convertLine()`
+  - `.convert()`
+  - `.convertLine()`
 
 ### Convert
 
@@ -206,12 +205,12 @@ Formatter().convertLine('Happy Birthday!')
 
 ## Upcoming Support
 
-- Formatting
+  - Formatting
 
-  - Want to right justify, left justify, or center the entire content? Coming soon!
+    - Want to right justify, left justify, or center the entire content? Coming soon!
 
-- Templates
-  - Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
+  - Templates
+    - Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
 
 ---
 
@@ -219,9 +218,9 @@ Formatter().convertLine('Happy Birthday!')
 
 ### Needs
 
-- ~~Conversion from string to list of lists for `.raw()` method~~ ✅ Complete!
-- ~~Unit and other tests inside the `/test` folder~~ ✅ Complete!
-- Suggestions or ideas for improvement are always welcome!
+  - ~~Conversion from string to list of lists for `.raw()` method~~ ✅ Complete!
+  - ~~Unit and other tests inside the `/test` folder~~ ✅ Complete!
+  - Suggestions or ideas for improvement are always welcome!
 
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue][] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
