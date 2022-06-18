@@ -12,7 +12,7 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SonicRift/Vestaboard)
 ![GitHub contributors](https://img.shields.io/github/contributors/SonicRift/Vestaboard)
 
-This is a lightweight and unassuming wrapper for the Vestaboard API. This project is open source and no payment is necessary to use - project donations are always appreciated to help fund this effort. If interested, you can [ view the donation page here.](https://shanesutro.com/donate)
+This is a lightweight and unassuming wrapper for the Vestaboard API. This project is open source and no payment is necessary to use - project donations are always appreciated to help fund this effort. If interested, you can [view the donation page here.](https://shanesutro.com/donate)
 
 By [Shane Sutro][] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
 
@@ -37,15 +37,15 @@ Once created, you will need to store your API Key and API Secret - you'll need t
 -   Via `pip`:
 
 ```pip3 install vestaboard```
-_Note: if using a virtual environment, use `pip` instead of `pip3`_
+*Note: if using a virtual environment, use `pip` instead of `pip3`*
 
 #### Usage
 
 This package will simplify the process of connecting your code to Vestaboard's API.
 By default, the module will store your API Key, API Secret, and Subscriber ID in a .txt file in the root folder of the project.
-If you do _not_ want to store this, pass `saveCredentials=False` into the creation of an `Installable`. Alternatively, you may skip creating an `Installable` alltogether if you already know your Subscription ID (which you can get from Vestaboards official portal if you'd like to skip this step).
+If you do *not* want to store this, pass `saveCredentials=False` into the creation of an `Installable`. Alternatively, you may skip creating an `Installable` alltogether if you already know your Subscription ID (which you can get from Vestaboards official portal if you'd like to skip this step).
 
-If you do **_not_** know your Subscription ID call `Installable()` with your API Key and API Secret to find and store it:
+If you do *not* know your Subscription ID call `Installable()` with your API Key and API Secret to find and store it:
 ```python
 import vestaboard
 #This will print your subscription ID, and store all keys in 'credentials.txt'
@@ -87,7 +87,7 @@ Currently this module supports the following:
 
 -   Creating an instance of Board by passing in one of the following:
     -   An Installable, instantiated with API Key and API Secret
-    -   By passing in an API Key, API Secret _and_ Subscription ID directly to `Board()`
+    -   By passing in an API Key, API Secret *and* Subscription ID directly to `Board()`
     -   By passing in an Installable where `getSubscription=False` and manually providing the Subscription ID to `Board`.
 
 The board currently has 2 methods available, the `.post()` method, which takes in a string and sends it to the board, and the `.raw()` method, which allows you to place characters precisely where you'd like them.
@@ -105,7 +105,7 @@ vboard.post('Everything you can imagine is real.')
 
 The `.post()` method supports all letters and symbols that Vestaboard supports, including all letters, numbers, and symbols.
 In addition, you may pass in a character code in curly brackets to represent a single character or a color tile. You can view a reference of character and color codes on [Vestaboard's official website by clicking here.](https://docs.vestaboard.com/characters)
-Vestaboard's API currently strips leading and trailing spaces from lines - _this includes the `{0}` character (the black tile)_. To precisely place characters, use the `.raw()` method (see below).
+Vestaboard's API currently strips leading and trailing spaces from lines - *this includes the `{0}` character (the black tile)*. To precisely place characters, use the `.raw()` method (see below).
 
 ```python
 import vestaboard
@@ -141,11 +141,11 @@ vboard.raw(characters)
 ![Board with raw input example](../media/rawexample.png?raw=true)
 
 ### New in Version 1.0.0
-The `.raw()` method now supports padding and truncating if more or fewer than 6 lines are provided! By default, your text will be centered vertically on the board, but will generate a warning (if an odd number of lines are provided, the additional line will be at the bottom). Supress this warning by passing in `pad='center'`. When passing in greater than 6 lines, the board will only display the first 6 lines.
+The `.raw()` method now supports padding and truncating if more or fewer than 6 lines are provided! By default, your text will be centered vertically on the board, but will generate a warning (if an odd number of lines are provided, the additional line will be at the bottom). Supress this warning by passing in `pad='center'`. When passing in greater than 6 lines, the board will only display the first 6 lines, removing lines from the bottom.
 
 You can also specify whether you'd like the padding to be added above or below your text by passing in `pad='top'` or `pad='bottom'` (only available when passing in < 6 lines). `pad='top'` will add padding above your text (your text will be at the bottom of the board), and `pad='bottom'` will add padding below your text (your text will be at the top of the board).
 
----
+***
 
 To assist with character conversion, use the `Formatter` class.
 The `Formatter` has two public helper options:
@@ -162,6 +162,7 @@ from vestaboard.formatter import Formatter
 Formatter().convert('Oh hi!')
 # Returns [15, 8, 0, 8, 9, 37]
 ```
+There is no limit to the number of letters you can convert. If you need to create a row with exactly 22 characters, you can use the `.convertLine()` method instead.
 
 To split by word, pass in the argument `byWord=True` along with your input string:
 
@@ -192,8 +193,8 @@ Formatter().convertLine('Happy Birthday!')
 ***
 ## Repository Info and Disclaimers
 ### Needs
--   Conversion from string to list of lists for `.raw()` method
--   Unit and other tests inside the `/test` folder
+-   ~~Conversion from string to list of lists for `.raw()` method~~ ✅ Complete!
+-   ~~Unit and other tests inside the `/test` folder~~ ✅ Complete!
 -   Suggestions or ideas for improvement are always welcome!
 
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue][] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
@@ -201,7 +202,7 @@ Thanks!
 
 #### [Shane Sutro][]
 
-#### You belong here :heart:
+You belong here ♥️
 
 *Note: this project is maintaned by independent developers and is not sponsored by nor affiliated with Vestaboard, Inc. I am unable to make changes to their API or answer questions about the company, upcoming API support, or future-state plans. For questions regarding Vestaboard's API, privacy policies, or to request assistance with your board, [please get in touch with them here.](https://www.vestaboard.com/contact)*
 

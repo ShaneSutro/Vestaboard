@@ -12,17 +12,20 @@ import vestaboard.vbUrls as vbUrls
 import warnings
 
 class Board:
-  def __init__(self, Installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
+  def __init__(self, installable=False, apiKey=False, apiSecret=False, subscriptionId=False):
     """
     Returns an instance of Board().
 
     Keyword arguments:
-    Installable - an instance of Installable()
+    installable - an instance of installable()
     apiKey - your Vestaboard API Key
     apiSecret - your Vestaboard API Secret
-    subscriptionId - your Subscription ID (this can be obtained for you by creating a new Installable() instance)
+    subscriptionId - your Subscription ID (this can be obtained for you by creating a new installable() instance)
     """
-    if not Installable:  #check for cred file
+    if installable and not isinstance(installable, Installable):
+      raise ValueError(f'Expected the first argument passed to be an instance of Installable, but instead got {type(installable)}. If you are not trying to pass an Installable, specify the name of the arguments, or pass "None" as the first argument.')
+
+    if not installable:  #check for cred file
       if (not apiKey or not apiSecret or not subscriptionId):
         try:
           creds = get_creds()
@@ -31,17 +34,17 @@ class Board:
             self.apiSecret = creds[1]
             self.subscriptionId = creds[2]
           elif (len(creds) < 3 or len(creds) > 3):
-            raise ValueError('Credentials have been saved, but one or more are missing. Create a new Installable and pass in saveCredentials=True, or pass in all three parameters when initializing a new Board.')
+            raise ValueError('Credentials have been saved, but one or more are missing. Create a new installable and pass in saveCredentials=True, or pass in all three parameters when initializing a new Board.')
         except FileNotFoundError:
-          raise ValueError('You must create an installable first or save credentials by passing saveCredentials=True into Installable().')
+          raise ValueError('You must create an installable first or save credentials by passing saveCredentials=True into installable().')
       else:
         self.apiKey = apiKey
         self.apiSecret = apiSecret
         self.subscriptionId = subscriptionId
     else:
-      self.apiKey = Installable.apiKey
-      self.apiSecret = Installable.apiSecret
-      self.subscriptionId = Installable.subscriptionId or subscriptionId
+      self.apiKey = installable.apiKey
+      self.apiSecret = installable.apiSecret
+      self.subscriptionId = installable.subscriptionId or subscriptionId
 
   def post(self, text):
     headers = {
@@ -52,19 +55,26 @@ class Board:
     requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
 
   def raw(self, charList: list, pad=None):
+    """
+    Posts already-formatted characters to the board.
+
+    Keyword arguments:
+
+    `charList` - a list of character lists
+
+    `pad` - adds padding when list or character lists is less than 6. Valid options are `top`, `bottom`, and `center`.
+    """
     base_filler = [0] * 22
     filler_needed = 6 - len(charList)
     for i, row in enumerate(charList):
       if not isinstance(row, list):
         raise ValueError(f'Nested items must be lists, not {type(row)}.')
       if len(row) != 22:
-        raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long.')
+        raise ValueError(f'Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long. Use the Formatter().convertLine() function if you need to add padding to your row.')
       for j, char in enumerate(row):
         if not isinstance(char, int):
           raise ValueError(f'Nested lists must contain numbers only - check row {i} char {j} (0 indexed)')
-    if len(charList) == 6:
-      pass
-    elif len(charList) > 6:
+    if len(charList) > 6:
       # warnings.warn doesn't work with f strings
       warning_message = f'The Vestaboard API accepts only 6 lines of characters; you\'ve passed in {len(charList)}. Only the first 6 will be shown.'
       warnings.warn(warning_message)
@@ -79,7 +89,7 @@ class Board:
       else:
         if pad == None:
           # warnings.warn doesn't work with f strings
-          warning_message = f'you provided a list with length {len(charList)}, which has been centered on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
+          warning_message = f'you provided a list with length {len(charList)}, which has been centered vertically on the board by default. Either provide a list with length 6, or set the "pad" option to suppress this warning.'
           warnings.warn(warning_message)
         while len(charList) < 6:
           charList.append(base_filler)
