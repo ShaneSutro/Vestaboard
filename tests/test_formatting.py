@@ -136,3 +136,19 @@ def test_space_buffer_adds_spaces_where_appropriate():
     assert t1 == e1, 'Should add spacing on both sides of centered text'
     assert t2 == e2, 'Should add spacing to the right side of left-justified text'
     assert t3 == e3, 'Should add spacing to the left side of right-justified text'
+
+def test_convert_handles_bracket_chars():
+    t1 = Formatter().convert('{62}Y{62} beginning')
+    t2 = Formatter().convert('end {65}')
+    t3 = Formatter().convert('by word {65}', byWord=True)
+    t4 = Formatter().convert('{65} by word start', byWord=True)
+
+    e1 = [62, 25, 62, 0, 2, 5, 7, 9, 14, 14, 9, 14, 7]
+    e2 = [5, 14, 4, 0, 65]
+    e3 = [[2, 25], [23, 15, 18, 4], [65]]
+    e4 = [[65], [2, 25], [23, 15, 18, 4], [19, 20, 1, 18, 20]]
+
+    assert t1 == e1, 'Should handle bracketed characters at the beginning of a string'
+    assert t2 == e2, 'Should handle bracketed characters at the end of a string'
+    assert t3 == e3, 'Should handle bracketed characters at the end of a string with byWord'
+    assert t4 == e4, 'Should handle bracketed characters at the beginning of a string with byWord'
