@@ -10,12 +10,12 @@
 
 ## GitHub Stats
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SonicRift/Vestaboard)
-![GitHub contributors](https://img.shields.io/github/contributors/SonicRift/Vestaboard)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/ShaneSutro/Vestaboard)
+![GitHub contributors](https://img.shields.io/github/contributors/ShaneSutro/Vestaboard)
 
 This is a lightweight and unassuming wrapper for the Vestaboard API. This project is open source and no payment is necessary to use - project donations are always appreciated to help fund this effort. If interested, you can [view the donation page here.](https://shanesutro.com/donate)
 
-By [Shane Sutro][] and [contributors](https://github.com/SonicRift/Vestaboard/graphs/contributors)
+By [Shane Sutro][] and [contributors](https://github.com/ShaneSutro/Vestaboard/graphs/contributors)
 
 Thanks to [@ClayClayClayClay](https://github.com/ClayClayClayClay) for donating and supporting this project!
 
