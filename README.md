@@ -17,7 +17,7 @@ This is a lightweight and unassuming wrapper for the Vestaboard API. This projec
 
 By [Shane Sutro][] and [contributors](https://github.com/ShaneSutro/Vestaboard/graphs/contributors)
 
-Thanks to [@ClayClayClayClay](https://github.com/ClayClayClayClay) for donating and supporting this project!
+Thanks to [@ClayClayClayClay](https://github.com/ClayClayClayClay) and [@jhaltd](https://github.com/jhaltd) for supporting and making this project possible!
 
 ---
 
