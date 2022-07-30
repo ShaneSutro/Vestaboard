@@ -130,6 +130,3 @@ class Formatter:
     else:
       return convertedArray
 
-  def _normalize_reversed_text(self, charArray):
-    return self._reverse_convert(charArray, normalize=True)
-
