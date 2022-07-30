@@ -1,5 +1,6 @@
 from vestaboard.characters import characters
 from vestaboard.characters import colors
+from vestaboard.characters import reverseCharacters
 import re
 
 class Formatter:
@@ -112,4 +113,23 @@ class Formatter:
     inputString = inputString.replace('^', color)
 
     return inputString
+
+  @staticmethod
+  def _reverse_convert(charArray, normalize: bool = False):
+    convertedArray = []
+    for line in charArray:
+      newLine = []
+      for character in line:
+        newLine.append(reverseCharacters[character])
+      if normalize:
+        convertedArray.append(''.join(newLine))
+      else:
+        convertedArray.append(newLine)
+    if normalize:
+      return '\n'.join(convertedArray)
+    else:
+      return convertedArray
+
+  def _normalize_reversed_text(self, charArray):
+    return self._reverse_convert(charArray, normalize=True)
 
