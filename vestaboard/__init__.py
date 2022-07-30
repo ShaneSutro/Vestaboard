@@ -191,6 +191,8 @@ class Board:
       return res.json()
 
   def _post_local(self, text):
+    print('Feature coming soon! For now, you can pass a pre-formatted message to your board by using the Board().raw() method.')
+    return
     print(self.localIP)
     print(self.localKey)
     localHeader = {
