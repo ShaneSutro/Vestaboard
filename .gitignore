@@ -19,6 +19,7 @@ __pycache__
 
 #Credential files
 credentials.txt
+local.txt
 
 #Other files
 test.py
