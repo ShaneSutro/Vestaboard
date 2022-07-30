@@ -6,6 +6,7 @@ A lightweight wrapper for Vestaboard
 Board - Class
 Installable - Class
 """
+from cgitb import enable
 from multiprocessing.sharedctypes import Value
 import requests
 from vestaboard.formatter import Formatter
@@ -15,29 +16,45 @@ import json
 import os
 
 class Board:
-  def __init__(self, installable=False, apiKey=False, apiSecret=False, subscriptionId=False, local=False, localKey: str = '', localIP: str = ''):
+  def __init__(self, installable=False, apiKey=False, apiSecret=False, subscriptionId=False, localApi: dict = None):
     """
     Returns an instance of Board().
 
-    Keyword arguments:
+    Args:
     installable - an instance of installable()
     apiKey - your Vestaboard API Key
     apiSecret - your Vestaboard API Secret
     subscriptionId - your Subscription ID (this can be obtained for you by creating a new installable() instance)
+
+    Keyword Args:
+    localApi = {
+      'key': str - your local API key
+      'ip': str - your boards local IP address
+      'useSavedToken': bool - use saved token instead of provided key and IP
+      'saveToken': bool - used alongside the enablement token to store your credentials. Defaults to True
+      'enablementToken': str - pass your boards enablement token along with IP to
+      enable your board's local API. Only pass in the enablement token if you are enabling a board
+      or need a new local API key.
+    }
     """
     if installable and not isinstance(installable, Installable):
       raise ValueError(f'Expected the first argument passed to be an instance of Installable, but instead got {type(installable)}. If you are not trying to pass an Installable, specify the name of the arguments, or pass "None" as the first argument.')
 
-    self.local = local
+    self.localOptions = localApi
 
-    if self.local:
-      if len(localKey) == 0 or len(localIP):
-        token = get_local_token()
-        self.localKey = token[0]
-        self.localIP = token[1]
+    if self.localOptions is not None:
+      if self.checkAndEnableLocalAPI():
+          return
+      if len(self.localOptions) < 2:
+        if 'useSavedToken' in self.localOptions and self.localOptions["useSavedToken"]:
+          token = get_local_token()
+          self.localKey = token[0]
+          self.localIP = token[1]
+        else:
+          raise ValueError("Either the local API key or your board's IP address was not provided. If you have saved credentials, pass `useSavedToken` to use those credentials instead.")
       else:
-        self.localKey = localKey
-        self.localIP = localIP
+        self.localKey = localApi["key"]
+        self.localIP = localApi["ip"]
       return
 
     if not installable:  #check for cred file
@@ -62,7 +79,7 @@ class Board:
       self.subscriptionId = installable.subscriptionId or subscriptionId
 
   def post(self, text):
-    if self.local:
+    if self.localOptions:
       self._post_local(text)
       return
 
@@ -114,36 +131,64 @@ class Board:
           charList.append(base_filler)
           if len(charList) < 6:
             charList.insert(0, base_filler)
-    headers = {
-        "X-Vestaboard-Api-Key" : self.apiKey,
-        "X-Vestaboard-Api-Secret" : self.apiSecret
-    }
     finalText = Formatter()._raw(charList)
-    requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
+    if self.localKey and self.localIP:
+      self._raw_local(finalText["characters"])
+    else:
+      headers = {
+          "X-Vestaboard-Api-Key" : self.apiKey,
+          "X-Vestaboard-Api-Secret" : self.apiSecret
+      }
+      requests.post(vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText)
 
-  @staticmethod
-  def enableLocalApi(enablementKey=False, saveToFile=True):
-    if not enablementKey or enablementKey is None:
-      raise ValueError('You must supply an enablement key to enable the local API')
-
+  def _enableLocalApi(self, enablementKey: str = '', boardIP: str = '', saveToFile: bool =True):
     headers = {
       "X-Vestaboard-Local-Api-Enablement-Token": enablementKey
     }
     try:
-      print(vbUrls.enableLocal)
-      response = requests.post(vbUrls.enableLocal, headers=headers)
+      response = requests.post(vbUrls.enableLocal.format(boardIP), headers=headers)
       if not response.ok:
         print('Looks like that didn\'t work. The Vestaboard returned the following message:\n', response.text)
       else:
         parsed = response.json()
+        self.localOptions = {'useSavedToken': True}
+        self.localIP = boardIP
+        self.localKey = parsed["apiKey"]
         print('Success! Here\'s your local API token:\n', parsed["apiKey"])
         if saveToFile:
           with open('./local.txt', 'w') as local:
             local.write(parsed["apiKey"])
-            print('Saved to ./local.txt')
+            local.write('\n')
+            local.write(boardIP)
+            print('Saved to ./local.txt! This instance of Board can now be used with the local API, or pass the `localApi={\'useSavedToken\': True}` when instantiating a new Board to use your saved credentials.')
             local.close()
     except OSError as e:
       raise ConnectionError("I couldn't connect to your board. Are you on the same network as the board you're trying to connect to?", e)
+
+  def checkAndEnableLocalAPI(self):
+    if 'enablementToken' not in self.localOptions:
+      return False
+    elif 'ip' not in self.localOptions:
+      raise ValueError("Looks like you're trying to enable your board's local API, but your board's IP was not passed in.\nSupply both the enablement token from Vestaboard and your board's local IP address and try again with just the key and IP.")
+
+    if 'key' in self.localOptions:
+      warnings.warn("An enablement token was provided, so I'm enabling the local API for you. If you've already enabled the local API on your board, remove the enablement token and try again.")
+
+    if 'saveToken' in self.localOptions and self.localOptions['saveToken'] == False:
+      self._enableLocalApi(self.localOptions['enablementToken'], self.localOptions['ip'], False)
+      return True
+    self._enableLocalApi(self.localOptions['enablementToken'], self.localOptions['ip'])
+    return True
+
+  def read(self, options: dict = {}):
+    if self.localIP and self.localKey:
+      localHeader = {
+      'X-Vestaboard-Local-Api-Key': self.localKey
+    }
+      res = requests.get(vbUrls.postLocal.format(self.localIP), headers=localHeader)
+      if 'print' in options and options['print']:
+        print(res.json())
+      return res.json()
 
   def _post_local(self, text):
     print(self.localIP)
@@ -159,6 +204,14 @@ class Board:
     print(finalText)
     res = requests.post(vbUrls.postLocal.format(self.localIP), headers=localHeader, data=json.dumps(textArr))
     print(res.text)
+
+  def _raw_local(self, chars):
+    localHeader = {
+      'X-Vestaboard-Local-Api-Key': self.localKey
+    }
+    res = requests.post(vbUrls.postLocal.format(self.localIP), headers=localHeader, data=json.dumps(chars))
+
+
 
 
 class Installable:
@@ -211,12 +264,15 @@ def get_creds():
       return creds
 
 def get_local_token():
-  with open('./local.txt', 'r') as local:
-    token = local.read().splitlines()
-    if len(token) == 0:
-        raise ValueError("Either your local token or IP was not passed in, and there's nothing stored.\nEither pass in a value for `localKey` and `localIP`, or store a copy of your local key and IP with the name 'local.txt.' Don't forget to include your board's IP address on line 2.")
-    elif len(token) == 1:
-        raise ValueError("Your local.txt file is missing either the local key or your board's IP address. Ensure your key is on line 1 and your IP is on line 2 and try again.")
-    elif len(token) > 2:
-      raise ValueError("Your local.txt file contains more than your key and IP (or has more than two lines of text). Please remove the extra key or line and try again. Your local.txt file should contain only the local key and board IP address, each on their own line.")
-    return (token[0], token[1])
+  try:
+    with open('./local.txt', 'r') as local:
+      token = local.read().splitlines()
+      if len(token) == 0:
+          raise ValueError("Either your local token or IP was not passed in, and there's nothing stored.\nEither pass in a value for `localKey` and `localIP`, or store a copy of your local key and IP with the name 'local.txt.' Don't forget to include your board's IP address on line 2.")
+      elif len(token) == 1:
+          raise ValueError("Your local.txt file is missing either the local key or your board's IP address. Ensure your key is on line 1 and your IP is on line 2 and try again.")
+      elif len(token) > 2:
+        raise ValueError("Your local.txt file contains more than your key and IP (or has more than two lines of text). Please remove the extra key or line and try again. Your local.txt file should contain only the local key and board IP address, each on their own line.")
+      return (token[0], token[1])
+  except FileNotFoundError:
+    raise FileNotFoundError("I couldn't find any stored tokens. If you have already enabled your board's local API, you can pass in your board's IP and token in via the `localApi` dict, or pass in just the enablement token to get and store a new API token.")
