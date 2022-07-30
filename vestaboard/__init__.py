@@ -190,11 +190,11 @@ class Board:
         print(res.json())
       if 'convert' in options and options['convert']:
         if 'normalize' in options and options['normalize']:
-          converted = Formatter()._normalize_reversed_text(res.json()['message'])
-          print(converted)
+          converted = Formatter()._reverse_convert(res.json()['message'], normalize=True)
+          return converted
         else:
           converted = Formatter()._reverse_convert(res.json()['message'])
-          print(converted)
+          return converted
       return res.json()
 
   def _post_local(self, text):
