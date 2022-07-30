@@ -188,6 +188,13 @@ class Board:
       res = requests.get(vbUrls.postLocal.format(self.localIP), headers=localHeader)
       if 'print' in options and options['print']:
         print(res.json())
+      if 'convert' in options and options['convert']:
+        if 'normalize' in options and options['normalize']:
+          converted = Formatter()._normalize_reversed_text(res.json()['message'])
+          print(converted)
+        else:
+          converted = Formatter()._reverse_convert(res.json()['message'])
+          print(converted)
       return res.json()
 
   def _post_local(self, text):
