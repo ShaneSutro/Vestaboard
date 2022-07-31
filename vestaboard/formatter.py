@@ -9,7 +9,7 @@ class Formatter:
 
   def _standard(self, text):
     if not self._isValid(text):
-      raise Exception('Your text contains one or more characters that the Vestaboard does not support.')
+      raise ValueError('Your text contains one or more characters that the Vestaboard does not support.')
     return {'text': text}
 
   @staticmethod
