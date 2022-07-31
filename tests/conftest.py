@@ -12,6 +12,15 @@ class MockedResponse:
         self.json = jsonFunc
 
 
+class MockedRead:
+    def __init__(self, response):
+        def jsonFunc():
+            return response
+
+        self.ok = True
+        self.json = jsonFunc
+
+
 def create_fake_cred_file():
     with open(
         os.path.dirname(os.path.dirname(__file__)) + "/credentials.txt", "w"
@@ -62,8 +71,35 @@ def no_token_file():
 
 
 @pytest.fixture
-def patched_requests(monkeypatch):
+def patched_post(monkeypatch):
     def mocked_post(uri, *args, **kwargs):
         return MockedResponse()
 
     monkeypatch.setattr(requests, "post", mocked_post)
+
+
+@pytest.fixture
+def patched_get(monkeypatch):
+    def mocked_get(uri, *args, **kwargs):
+        if uri == "https://rw.vestaboard.com":
+            return MockedRead(
+                {
+                    "currentMessage": {
+                        "layout": "[[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]"
+                    }
+                }
+            )
+        return MockedRead(
+            {
+                "message": [
+                    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ]
+            }
+        )
+
+    monkeypatch.setattr(requests, "get", mocked_get)

@@ -6,8 +6,6 @@ A lightweight wrapper for Vestaboard
 Board - Class
 Installable - Class
 """
-from cgitb import enable
-from multiprocessing.sharedctypes import Value
 import requests
 from vestaboard.formatter import Formatter
 import vestaboard.vbUrls as vbUrls
@@ -24,6 +22,7 @@ class Board:
         apiSecret=False,
         subscriptionId=False,
         localApi: dict = None,
+        readWrite: bool = False,
     ):
         """
         Returns an instance of Board().
@@ -53,6 +52,7 @@ class Board:
         self.localOptions = localApi
         self.localKey = ""
         self.localIP = ""
+        self.readWrite = readWrite
 
         if self.localOptions is not None:
             if self.checkAndEnableLocalAPI():
@@ -75,6 +75,23 @@ class Board:
             return
 
         if not installable:  # check for cred file
+            if readWrite:
+                if not apiKey:
+                    try:
+                        creds = get_creds()
+                        if len(creds) < 2:
+                            raise ValueError(
+                                "You must supply a read/write enabled API key to use readWrite mode, or instantiate an Installable in readWrite mode to store your credentials."
+                            )
+                        else:
+                            self.apiKey = creds[0]
+                    except FileNotFoundError as e:
+                        raise FileNotFoundError(
+                            "I couldn't find any saved credentials, and no API key was provided.\nTo use readWrite mode, you must supply a read/write enabled API key, or instantiate an Installable in readWrite mode."
+                        ) from e
+                else:
+                    self.apiKey = apiKey
+                    return
             if not apiKey or not apiSecret or not subscriptionId:
                 try:
                     creds = get_creds()
@@ -86,10 +103,10 @@ class Board:
                         raise ValueError(
                             "Credentials have been saved, but one or more are missing. Create a new installable and pass in saveCredentials=True, or pass in all three parameters when initializing a new Board."
                         )
-                except FileNotFoundError:
+                except FileNotFoundError as e:
                     raise ValueError(
                         "You must create an installable first or save credentials by passing saveCredentials=True into installable()."
-                    )
+                    ) from e
             else:
                 self.apiKey = apiKey
                 self.apiSecret = apiSecret
@@ -161,6 +178,13 @@ class Board:
         finalText = Formatter()._raw(charList)
         if self.localKey and self.localIP:
             self._raw_local(finalText["characters"])
+        elif self.readWrite and self.apiKey:
+            headers = {"X-Vestaboard-Read-Write-Key": self.apiKey}
+            requests.post(
+                vbUrls.readWrite,
+                headers=headers,
+                data=json.dumps(finalText["characters"]),
+            )
         else:
             headers = {
                 "X-Vestaboard-Api-Key": self.apiKey,
@@ -228,24 +252,31 @@ class Board:
         return True
 
     def read(self, options: dict = {}):
+        if not self.readWrite:
+            if self.localOptions is None or "useSavedToken" not in self.localOptions:
+                raise ValueError(
+                    '.read() is only available when using local API or by using a read/write enabled API key.\nPass "readWrite=True" along with your apiKey to enable readWrite mode.'
+                )
         if self.localIP and self.localKey:
             localHeader = {"X-Vestaboard-Local-Api-Key": self.localKey}
             res = requests.get(
                 vbUrls.postLocal.format(self.localIP), headers=localHeader
             )
-            if "print" in options and options["print"]:
-                print(res.json())
-            if "convert" in options and options["convert"]:
-                if "normalize" in options and options["normalize"]:
-                    converted = Formatter()._reverse_convert(
-                        res.json()["message"], normalize=True
-                    )
-                    return converted
-                else:
-                    converted = Formatter()._reverse_convert(res.json()["message"])
-                    return converted
-            return res.json()
-        return 'Standard boards do not support reading messages.'
+            response_text = res.json()["message"]
+        elif self.readWrite and self.apiKey:
+            readWriteHeader = {"X-Vestaboard-Read-Write-Key": self.apiKey}
+            res = requests.get(vbUrls.readWrite, headers=readWriteHeader)
+            response_text = json.loads(res.json()["currentMessage"]["layout"])
+        if "print" in options and options["print"]:
+            print(res.json())
+        if "convert" in options and options["convert"]:
+            if "normalize" in options and options["normalize"]:
+                converted = Formatter()._reverse_convert(response_text, normalize=True)
+                return converted
+            else:
+                converted = Formatter()._reverse_convert(response_text)
+                return converted
+        return res.json()
 
     def _post_local(self, text):
         print(
