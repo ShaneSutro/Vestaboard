@@ -1,26 +1,5 @@
-import json
-import vestaboard
 import pytest
-import requests
-import os
-import json
-
-
-class MockedResponse:
-    def __init__(self):
-        def jsonFunc():
-            return {"message": "Local API enabled", "apiKey": "fakelocalkey"}
-
-        self.ok = True
-        self.json = jsonFunc
-
-
-@pytest.fixture
-def patched_requests(monkeypatch):
-    def mocked_post(uri, *args, **kwargs):
-        return MockedResponse()
-
-    monkeypatch.setattr(requests, "post", mocked_post)
+import vestaboard
 
 
 def test_enabling_local_api_succeeds(patched_requests):
@@ -34,12 +13,10 @@ def test_using_manual_key_and_ip():
     assert b.localIP == "10.0.0.1"
 
 
-def test_using_saved_key_and_ip():
-    create_fake_local_file()
+def test_using_saved_key_and_ip(with_token_file):
     b = vestaboard.Board(localApi={"useSavedToken": True})
     assert b.localKey == "fakeLocalKey"
     assert b.localIP == "10.0.0.2"
-    remove_fake_local_file()
 
 
 def test_warns_when_both_key_and_enablement_token(patched_requests):
@@ -66,40 +43,21 @@ def test_errors_when_no_ip_provided_to_use_api():
         vestaboard.Board(localApi={"key": "token"})
 
 
-def test_errors_when_no_saved_key_and_none_provided():
+def test_errors_when_no_saved_key_and_none_provided(no_token_file):
     with pytest.raises(ValueError):
-        remove_fake_local_file()
         vestaboard.Board(localApi={})
 
 
-def test_errors_with_save_only():
+def test_errors_with_save_only(no_token_file):
     with pytest.raises(ValueError):
-        remove_fake_local_file()
         vestaboard.Board(localApi={"saveToken": True})
 
 
-def test_nonexistent_token_file():
+def test_nonexistent_token_file(no_token_file):
     with pytest.raises(FileNotFoundError):
-        remove_fake_local_file()
         vestaboard.Board(localApi={"useSavedToken": True})
 
 
-def test_fails_with_ip_only():
+def test_fails_with_ip_only(no_token_file):
     with pytest.raises(ValueError):
-        remove_fake_local_file()
         vestaboard.Board(localApi={"ip": "10.0.0.1"})
-
-
-def create_fake_local_file():
-    with open(os.path.dirname(os.path.dirname(__file__)) + "/local.txt", "w") as f:
-        f.write("fakeLocalKey\n")
-        f.write("10.0.0.2")
-        f.close()
-
-
-def remove_fake_local_file():
-    try:
-        filePath = os.path.dirname(os.path.dirname(__file__))
-        os.remove(filePath + "/local.txt")
-    except OSError:
-        pass
