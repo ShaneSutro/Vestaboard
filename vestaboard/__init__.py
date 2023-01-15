@@ -23,6 +23,7 @@ class Board:
         subscriptionId=False,
         localApi: dict = None,
         readWrite: bool = False,
+        validateKey: bool = False,
     ):
         """
         Returns an instance of Board().
@@ -32,6 +33,8 @@ class Board:
         apiKey - your Vestaboard API Key
         apiSecret - your Vestaboard API Secret
         subscriptionId - your Subscription ID (this can be obtained for you by creating a new installable() instance)
+        readWrite - pass True to create a new instance of Read/Write Board
+        validateKey - Read/Write & Local API only - sends a GET request to validate the API key and raises an error if the key is invalid
 
         Keyword Args:
         localApi = {
@@ -53,6 +56,7 @@ class Board:
         self.localKey = ""
         self.localIP = ""
         self.readWrite = readWrite
+        self.validateKey = validateKey
 
         if self.localOptions is not None:
             if self.checkAndEnableLocalAPI():
@@ -72,6 +76,8 @@ class Board:
             else:
                 self.localKey = localApi["key"]
                 self.localIP = localApi["ip"]
+            if self.validateKey:
+                self.read()
             return
 
         if not installable:  # check for cred file
@@ -85,12 +91,16 @@ class Board:
                             )
                         else:
                             self.apiKey = creds[0]
+                            if self.validateKey:
+                                self.read()
                     except FileNotFoundError as e:
                         raise FileNotFoundError(
                             "I couldn't find any saved credentials, and no API key was provided.\nTo use readWrite mode, you must supply a read/write enabled API key, or instantiate an Installable in readWrite mode."
                         ) from e
                 else:
                     self.apiKey = apiKey
+                    if self.validateKey:
+                        self.read()
                     return
             if not apiKey or not apiSecret or not subscriptionId:
                 try:
@@ -121,14 +131,25 @@ class Board:
             self._post_local(text)
             return
 
+        if self.readWrite:
+            if not isinstance(text, str):
+                raise ValueError(
+                    "The `post()` method expects a plain string - if your characters are already converted, use the `raw()` method instead."
+                )
+            headers = {"X-Vestaboard-Read-Write-Key": self.apiKey}
+            fm = Formatter()
+            self.raw(fm.convertPlainText(text))
+            return
+
         headers = {
             "X-Vestaboard-Api-Key": self.apiKey,
             "X-Vestaboard-Api-Secret": self.apiSecret,
         }
         finalText = Formatter()._standard(text)
-        requests.post(
+        req = requests.post(
             vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText
         )
+        req.raise_for_status()
 
     def raw(self, charList: list, pad=None):
         """
@@ -262,10 +283,13 @@ class Board:
             res = requests.get(
                 vbUrls.postLocal.format(self.localIP), headers=localHeader
             )
+            res.raise_for_status()
             response_text = res.json()["message"]
         elif self.readWrite and self.apiKey:
             readWriteHeader = {"X-Vestaboard-Read-Write-Key": self.apiKey}
+            print("Getting board message")
             res = requests.get(vbUrls.readWrite, headers=readWriteHeader)
+            res.raise_for_status()
             response_text = json.loads(res.json()["currentMessage"]["layout"])
         if "print" in options and options["print"]:
             print(res.json())
@@ -279,24 +303,15 @@ class Board:
         return res.json()
 
     def _post_local(self, text):
-        print(
-            "Feature coming soon! For now, you can pass a pre-formatted message to your board by using the Board().raw() method."
-        )
-        return
-        print(self.localIP)
-        print(self.localKey)
         localHeader = {"X-Vestaboard-Local-Api-Key": self.localKey}
-        textArr = []
-        f = Formatter()
-        for i in range(0, 6):
-            textArr.append(f.convertLine(text))
-        finalText = f._raw(textArr)
-        print(finalText)
+        fm = Formatter()
+        convertedByDefault = fm.convertPlainText(text)
         res = requests.post(
             vbUrls.postLocal.format(self.localIP),
             headers=localHeader,
-            data=json.dumps(textArr),
+            data=json.dumps(convertedByDefault),
         )
+        res.raise_for_status()
         print(res.text)
 
     def _raw_local(self, chars):
@@ -306,6 +321,7 @@ class Board:
             headers=localHeader,
             data=json.dumps(chars),
         )
+        res.raise_for_status()
 
 
 class Installable:
@@ -350,6 +366,7 @@ class Installable:
             "X-Vestaboard-Api-Secret": self.apiSecret,
         }
         response = requests.get(vbUrls.subscription, headers=headers)
+        response.raise_for_status()
         if self.saveCredentials or save and response.status_code == 200:
             with open("./credentials.txt", "a") as cred:
                 cred.write(response.json()["subscriptions"][0]["_id"] + "\n")
