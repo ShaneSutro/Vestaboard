@@ -4,6 +4,7 @@ from vestaboard.characters import reverseCharacters
 import warnings
 import textwrap
 import re
+import math
 
 
 class Formatter:
@@ -146,24 +147,75 @@ class Formatter:
         else:
             return convertedArray
 
+    def _add_vestaboard_spacing(self, lines, size=[6, 22], justify="left"):
+        _, maxChars = size
+        longestLine = 0
+        for line in lines:
+            lineLength = len(line)
+            if lineLength > longestLine:
+                longestLine = lineLength
+
+        numSpacesNeeded = 0
+        if maxChars > longestLine:
+            numSpacesNeeded = math.floor((maxChars - longestLine) / 2)
+
+        paddedLines = []
+        for line in lines:
+            lineLength = len(line)
+            if justify == "left":
+                paddedLines.append(
+                    self.convertLine(
+                        " " * numSpacesNeeded
+                        + line
+                        + " " * (maxChars - lineLength - numSpacesNeeded)
+                    )
+                )
+            elif justify == "right":
+                paddedLines.append(
+                    self.convertLine(
+                        " " * (maxChars - lineLength - numSpacesNeeded)
+                        + line
+                        + " " * numSpacesNeeded
+                    )
+                )
+
+        return paddedLines
+
+        # Find longest line
+        # Determine num of extra spaces needed and divide by 2 (take floor)
+        # Add spaces to left side (or right, if justify == right)
+        # Add remaining spaces to opposite side up to char limit
+        pass
+
     def convertPlainText(
-        self, text, size=[6, 22], justify="center", align="center", spaceBuffer=False
+        self,
+        text,
+        size=[6, 22],
+        justify="center",
+        align="center",
+        useVestaboardCentering=False,
     ):
         maxRows, maxCols = size
         splitLines = []
-        if spaceBuffer:
-            for linebreak in text.split("\n"):
-                splitLines += textwrap.fill(linebreak, maxCols - 2).split("\n")
-        else:
-            for linebreak in text.split("\n"):
-                splitLines += textwrap.fill(linebreak, maxCols).split("\n")
+        for linebreak in text.split("\n"):
+            splitLines += textwrap.fill(linebreak, maxCols).split("\n")
         if len(splitLines) > maxRows:
             warningMessage = f"This text is too long to fit within the space specified ({maxRows} rows of {maxCols} characters each). Only the first {maxRows} rows are being returned."
             warnings.warn(warningMessage)
 
         convertedLines = []
-        for line in splitLines:
-            convertedLines.append(self.convertLine(line, justify, "black", spaceBuffer))
+
+        if useVestaboardCentering:
+            if justify == "center":
+                warnings.warn(
+                    "Vestaboard formatting only affects left or right-justified text. Because of this, your text will be left justified by default. If you don't want your text left justified, remove `useVestaboardCentering` from your function call."
+                )
+                convertedLines = self._add_vestaboard_spacing(splitLines, size)
+            else:
+                convertedLines = self._add_vestaboard_spacing(splitLines, size, justify)
+        else:
+            for line in splitLines:
+                convertedLines.append(self.convertLine(line, justify, "black", False))
 
         if len(convertedLines) < maxRows:
             blankLine = [0] * maxCols

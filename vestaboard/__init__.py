@@ -148,7 +148,9 @@ class Board:
                 )
             headers = {"X-Vestaboard-Read-Write-Key": self.apiKey}
             fm = Formatter()
-            self.raw(fm.convertPlainText(text))
+            self.raw(
+                fm.convertPlainText(text, justify="left", useVestaboardCentering=True)
+            )
             return
 
         headers = {
