@@ -105,3 +105,9 @@ def test_joins_back_into_lines_with_normalize(with_token_file, patched_get):
         + "e                     \n"
         + "f                     "
     )
+
+def test_uses_provided_ip_address_when_using_saved_token(with_token_file, patched_get):
+    b = vestaboard.Board(localApi={"useSavedToken": True, "ip": "10.10.10.10"})
+    assert b.localIP == "10.10.10.10"
+
+

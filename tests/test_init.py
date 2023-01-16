@@ -95,7 +95,7 @@ def test_raw_input_fails_if_nested_lists_not_contain_all_numbers(with_credential
         vestaboard.Board().raw(invalidRawChar)
 
 
-def test_valid_standard_input_does_not_fail(with_credentials):
+def test_valid_standard_input_does_not_fail(with_credentials, patched_post):
     vestaboard.Board().post('abcdefghijklmnopqrstuvwxyz1234567890 !@#$()-+&=;:"%,./?°')
     vestaboard.Board().post("Triage Status:\n\n{63}Red - 24 files")
     vestaboard.Board().post("Character code at end {23}")
@@ -114,7 +114,7 @@ def test_valid_raw_input_does_not_fail(with_credentials):
     vestaboard.Board().raw(validRawChar)
 
 
-def test_board_can_be_instantiated_with_an_installable_and_sub_id():
+def test_board_can_be_instantiated_with_an_installable_and_sub_id(patched_post):
     vb = create_fake_vestaboard()
     vb.post("Should not error")
 

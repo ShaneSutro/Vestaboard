@@ -111,9 +111,9 @@ class Formatter:
 
     @staticmethod
     def _addSpaceBuffer(inputString, justify):
-        if justify == "right":
+        if justify == "left":
             return inputString + " "
-        elif justify == "left":
+        elif justify == "right":
             return " " + inputString
         else:
             return " " + inputString + " "

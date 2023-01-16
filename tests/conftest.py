@@ -8,8 +8,12 @@ class MockedResponse:
         def jsonFunc():
             return {"message": "Local API enabled", "apiKey": "fakelocalkey"}
 
+        def raise_for_status():
+            return 200
+
         self.ok = True
         self.json = jsonFunc
+        self.raise_for_status = raise_for_status
 
 
 class MockedRead:
@@ -17,8 +21,12 @@ class MockedRead:
         def jsonFunc():
             return response
 
+        def raise_for_status():
+            return 200
+
         self.ok = True
         self.json = jsonFunc
+        self.raise_for_status = raise_for_status
 
 
 def create_fake_cred_file():

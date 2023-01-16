@@ -74,8 +74,18 @@ class Board:
                         "Either the local API key or your board's IP address was not provided. If you have saved credentials, pass `useSavedToken` to use those credentials instead."
                     )
             else:
-                self.localKey = localApi["key"]
-                self.localIP = localApi["ip"]
+                if (
+                    "useSavedToken" in self.localOptions
+                    and self.localOptions["useSavedToken"]
+                ):
+                    token = get_local_token()
+                    self.localKey = token[0]
+                    self.localIP = token[1]
+                    if "ip" in self.localOptions and self.localOptions["ip"]:
+                        self.localIP = self.localOptions["ip"]
+                else:
+                    self.localKey = localApi["key"]
+                    self.localIP = localApi["ip"]
             if self.validateKey:
                 self.read()
             return
