@@ -1,12 +1,12 @@
 # Vestaboard
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7d172f1a1ede4c91bb379aa0837a3683)](https://app.codacy.com/gh/SonicRift/Vestaboard?utm_source=github.com&utm_medium=referral&utm_content=SonicRift/Vestaboard&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7d172f1a1ede4c91bb379aa0837a3683)](https://app.codacy.com/gh/SonicRift/Vestaboard?utm_source=github.com\&utm_medium=referral\&utm_content=SonicRift/Vestaboard\&utm_campaign=Badge_Grade)
 [![Build Status](https://app.travis-ci.com/ShaneSutro/Vestaboard.svg?branch=master)](https://app.travis-ci.com/ShaneSutro/Vestaboard)
 [![PyPI version](https://badge.fury.io/py/Vestaboard.svg)](https://badge.fury.io/py/Vestaboard)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/vestaboard)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vestaboard)
 
----
+***
 
 ## GitHub Stats
 
@@ -19,11 +19,11 @@ By [Shane Sutro][] and [contributors](https://github.com/ShaneSutro/Vestaboard/g
 
 Thanks to [@ClayClayClayClay](https://github.com/ClayClayClayClay) and [@jhaltd](https://github.com/jhaltd) for supporting and making this project possible!
 
----
+***
 
 ### Official API
 
-You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/). _[Disclaimer](#repository-info-and-disclaimers)_
+You can view more information about Vestaboard's API [here](https://docs.vestaboard.com/). *[Disclaimer](#repository-info-and-disclaimers)*
 
 ### Concepts
 
@@ -33,25 +33,25 @@ Each Board subscribes to an `installable` via an `installation` and as such is a
 
 Once created, you will need to store your API Key and API Secret - you'll need this to communicate with your board. During this process, you will be prompted to select which board you'd like to install this `installable` onto - this is what creates the Subscription ID behind the scenes. Read more below.
 
----
+***
 
 ### Using this package
 
 #### Installation
 
--   Download and install into your project file
--   Via `pip`:
+*   Download and install into your project file
+*   Via `pip`:
 
 `pip3 install vestaboard`
-_Note: if using a virtual environment, use `pip` instead of `pip3`_
+*Note: if using a virtual environment, use `pip` instead of `pip3`*
 
 #### Usage
 
 This package will simplify the process of connecting your code to Vestaboard's API.
 By default, the module will store your API Key, API Secret, and Subscriber ID in a .txt file in the root folder of the project.
-If you do _not_ want to store this, pass `saveCredentials=False` into the creation of an `Installable`. Alternatively, you may skip creating an `Installable` alltogether if you already know your Subscription ID (which you can get from Vestaboards official portal if you'd like to skip this step).
+If you do *not* want to store this, pass `saveCredentials=False` into the creation of an `Installable`. Alternatively, you may skip creating an `Installable` alltogether if you already know your Subscription ID (which you can get from Vestaboards official portal if you'd like to skip this step).
 
-If you do _not_ know your Subscription ID call `Installable()` with your API Key and API Secret to find and store it:
+If you do *not* know your Subscription ID call `Installable()` with your API Key and API Secret to find and store it:
 
 ```python
 import vestaboard
@@ -89,21 +89,21 @@ vboard = Board(apiKey=config.api_key, apiSecret=config.api_secret, subscriptionI
 vboard.post('Love is all you need')
 ```
 
----
+***
 
 ## Currently Supported
 
 Currently this module supports the following:
 
-- Creating an Installable object by passing in an API Key and API Secret
+*   Creating an Installable object by passing in an API Key and API Secret
 
-  - This will find and store the Subscription ID for you
-  - Passing `getSubscription=False` overrides this - if you set this to False, remember to pass in a Subscription ID when instantiating a new `Board`
+    *   This will find and store the Subscription ID for you
+    *   Passing `getSubscription=False` overrides this - if you set this to False, remember to pass in a Subscription ID when instantiating a new `Board`
 
-- Creating an instance of Board by passing in one of the following:
-  - An Installable, instantiated with API Key and API Secret
-  - By passing in an API Key, API Secret _and_ Subscription ID directly to `Board()`
-  - By passing in an Installable where `getSubscription=False` and manually providing the Subscription ID to `Board`.
+*   Creating an instance of Board by passing in one of the following:
+    *   An Installable, instantiated with API Key and API Secret
+    *   By passing in an API Key, API Secret *and* Subscription ID directly to `Board()`
+    *   By passing in an Installable where `getSubscription=False` and manually providing the Subscription ID to `Board`.
 
 The board currently has 2 methods available, the `.post()` method, which takes in a string and sends it to the board, and the `.raw()` method, which allows you to place characters precisely where you'd like them.
 
@@ -120,7 +120,7 @@ vboard.post('Everything you can imagine is real.')
 
 The `.post()` method supports all letters and symbols that Vestaboard supports, including all letters, numbers, and symbols.
 In addition, you may pass in a character code in curly brackets to represent a single character or a color tile. You can view a reference of character and color codes on [Vestaboard's official website by clicking here.](https://docs.vestaboard.com/characters)
-Vestaboard's API currently strips leading and trailing spaces from lines - _this includes the `{0}` character (the black tile)_. To precisely place characters, use the `.raw()` method (see below).
+Vestaboard's API currently strips leading and trailing spaces from lines - *this includes the `{0}` character (the black tile)*. To precisely place characters, use the `.raw()` method (see below).
 
 ```python
 import vestaboard
@@ -163,13 +163,13 @@ The `.raw()` method now supports padding and truncating if more or fewer than 6 
 
 You can also specify whether you'd like the padding to be added above or below your text by passing in `pad='top'` or `pad='bottom'` (only available when passing in < 6 lines). `pad='top'` will add padding above your text (your text will be at the bottom of the board), and `pad='bottom'` will add padding below your text (your text will be at the top of the board).
 
----
+***
 
 To assist with character conversion, use the `Formatter` class.
 The `Formatter` has two public helper options:
 
-- `.convert()`
-- `.convertLine()`
+*   `.convert()`
+*   `.convertLine()`
 
 ### Convert
 
@@ -206,22 +206,22 @@ Formatter().convertLine('Happy Birthday!')
 
 ## Upcoming Support
 
-- Formatting
+*   Formatting
 
-  - Want to right justify, left justify, or center the entire content? Coming soon!
+    *   Want to right justify, left justify, or center the entire content? Coming soon!
 
-- Templates
-  - Choose from a list of templates to send to your board, including calendars, Q&A, trivia, and more
+*   Templates
+    *   Choose from a list of templates to send to your board, including calendars, Q\&A, trivia, and more
 
----
+***
 
 ## Repository Info and Disclaimers
 
 ### Needs
 
-- ~~Conversion from string to list of lists for `.raw()` method~~ ✅ Complete!
-- ~~Unit and other tests inside the `/test` folder~~ ✅ Complete!
-- Suggestions or ideas for improvement are always welcome!
+*   \~~Conversion from string to list of lists for `.raw()` method~~ ✅ Complete!
+*   \~~Unit and other tests inside the `/test` folder~~ ✅ Complete!
+*   Suggestions or ideas for improvement are always welcome!
 
 Interested in contributing to this project? Send a PR with changes and I'd be happy to review! If you're having trouble with this library, be sure to [open an issue][] so that I can look into the problem. Any details that can be provided alongside the problem would be greatly appreciated.
 Thanks!
@@ -230,7 +230,8 @@ Thanks!
 
 You belong here ♥️
 
-_Note: this project is maintaned by independent developers and is not sponsored by nor affiliated with Vestaboard, Inc. I am unable to make changes to their API or answer questions about the company, upcoming API support, or future-state plans. For questions regarding Vestaboard's API, privacy policies, or to request assistance with your board, [please get in touch with them here.](https://www.vestaboard.com/contact)_
+*Note: this project is maintaned by independent developers and is not sponsored by nor affiliated with Vestaboard, Inc. I am unable to make changes to their API or answer questions about the company, upcoming API support, or future-state plans. For questions regarding Vestaboard's API, privacy policies, or to request assistance with your board, [please get in touch with them here.](https://www.vestaboard.com/contact)*
 
 [open an issue]: https://github.com/SonicRift/Vestaboard/issues
+
 [shane sutro]: https://github.com/SonicRift
