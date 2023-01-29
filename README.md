@@ -212,7 +212,7 @@ Vestaboard has added the abilit to connect directly to your board via the local 
 *   Your board's IP address on your network
 *   An enablement token from Vestaboard ([more info here](https://docs.vestaboard.com/local) on the Vestaboard site)
 
-Once you have the enablement token, you will use this enablement token to generate an API key by communicating directly with the board. Note that the below step only needs to be performed once - once you have the API key, you will no longer need the enablemend key unless you want to generate a new API key.
+Once you have the enablement token, you will use this enablement token to generate an API key by communicating directly with the board. Note that the below step only needs to be performed once - once you have the API key, you will no longer need the enablement key unless you want to generate a new API key.
 ```python3
 from vestaboard import Board
 # Create a new board and pass in your board's IP and enablement token
@@ -290,7 +290,7 @@ The `Formatter().convertPlainText()` accepts the following:
 - `justify` - accepts `'center' | 'left' | 'right'`. `'center'` is the default.
 - `align` - accepts `'center' | 'top' | 'bottom'`. `'center'` is the default
 - `useVestaboardCentering` - `True | False` - Vestaboard's formatting centers the longest line when splitting lines, then left-justifies all remaining lines based on that line.
-t's a subtle difference and doesn't apply to every text that's passed in, so you may not notice anything different when using this option. Furthermore, this option *only applies when `justify` is set to `left` or `right`, since it has no effect on center-justified text.
+It's a subtle difference and doesn't apply to every text that's passed in, so you may not notice anything different when using this option. Furthermore, this option *only applies when `justify` is set to `left` or `right`*, since it has no effect on center-justified text.
 ## Upcoming Support
 
 *   Formatting
