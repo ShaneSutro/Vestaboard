@@ -204,15 +204,17 @@ Formatter().convertLine('Happy Birthday!')
 # Returns [0, 0, 0, 8, 1, 16, 16, 25, 0, 2, 9, 18, 20, 8, 4, 1, 25, 37, 0, 0, 0, 0]
 ```
 
-### New in version v1.2.0
+## New in version v1.2.0
 
-**Local API Support**
+### Local API Support
 
 Vestaboard has added the abilit to connect directly to your board via the local API, bypassing the Vestaboard API endpoints directly. Version 1.2.0 now supports instantiating a local version of your board. You will need:
+
 *   Your board's IP address on your network
 *   An enablement token from Vestaboard ([more info here](https://docs.vestaboard.com/local) on the Vestaboard site)
 
 Once you have the enablement token, you will use this enablement token to generate an API key by communicating directly with the board. Note that the below step only needs to be performed once - once you have the API key, you will no longer need the enablement key unless you want to generate a new API key.
+
 ```python3
 from vestaboard import Board
 # Create a new board and pass in your board's IP and enablement token
@@ -222,6 +224,7 @@ localBoard = Board(localApi={ 'ip': '10.0.0.78', 'enablementToken': '6a932ec0-c4
 # Response from Vestaboard containing your new API key:
 # {"message":"Local API enabled","apiKey":"MDJEMEZEODEtRjNFMS00QUNFLUI0MzAtNjJCQkMyNUJDOUI5Cg"}
 ```
+
 As with the main `Board()` instantiation, the above will store your new local API key for you in a text file along with your board's IP address, and from that point forward you can instantiate a new board without passing in your API key, board IP address, or enablement token.
 
 ```python3
@@ -235,21 +238,25 @@ ipOverride = Board(localApi={'useSavedToken': True, 'ip': '10.0.0.20'})
 ```
 
 If you've already performed the enablement step and have a local API key or chose not to store it in a text file, you can instantiate and use a local board directly by passing in the IP address and key.
+
 ```python3
 from vestaboard import Board
 
 localBoard = Board(localApi={ 'ip': '10.0.0.78', 'key': 'MDJEMEZEODEtRjNFMS00QUNFLUI0MzAtNjJCQkMyNUJDOUI5Cg' })
 ```
 
-**Read/Write API Support**
+### Read/Write API Support
 
 Vestaboard now supports reading messages from your board as well as posting messages. As of the time of writing, you can enable read/write ("RW" henceforth) on a single board on your account by visiting [web.vestaboard.com](https://web.vestaboard.com/). Unlike sending messages to the standard API, the read/write endpoint does not require an API secret. When instantiating a RW board, supply the key and set `readWrite` to `True`.
+
 ```python3
 from vestaboard import Board
 
 rwBoard = Board(apiKey='MDJEMEZEODEtRjNFMS00QUNFLUI0MzAtNjJCQkMyNUJDOUI5Cg', readWrite=True)
 ```
+
 As with all board instantiations shown above, your Read/Write key will be stored in a text file for you. If you have previously stored a key, you may supply only the `readWrite = True` parameter when instantiating a new `Board`.
+
 ```python3
 from vestaboard import Board
 
@@ -257,9 +264,10 @@ from vestaboard import Board
 rwBoard = Board(readWrite = True)
 ```
 
-**Reading a Message**
+### Reading a Message
 
 Both the Read/Write board and Local API board support reading the current message from the board. Within your code, you can use the `Board().read()` method to get the current message, which by default will be Vestaboard's standard character array (a 6x22 list of numbers where each number represents a character).
+
 ```python3
 from vestaboard import Board
 
@@ -267,7 +275,9 @@ readWriteBoard = Board(readWrite = True, apiKey = 'MDJEMEZEODEtRjNFMS00QUNFLUI0M
 
 currentMessage = readWriteBoard.read()
 ```
+
 An optional `options` dict can be passed to the `.read()` method with the following options:
+
 ```python3
 # Print the character array to the console after reading
 board.read({'print': True})
@@ -280,22 +290,21 @@ board.read({'convert': True})
 board.read({'convert': True, 'normalize': True})
 ```
 
-**New Formatter Method**
+### New Formatter Method
 
 The standard Vestaboard API allows you to post plain text and Vestaboard's endpoint handles formatting (when using a standard board, this is handled by the `.post()` method). The Read/Write and Local API versions *do not have this same functionality.* Because of this, I've done my best to re-create the same conversion logic and applied it to the `.post()` method when using a Read/Write or Local API board. Behind the scenes, the text is split into lines, left justified, and centered vertically. If you'd like to format things differently, you can use the `.convertPlainText()` method of the `Formatter()` to gain additional controls over exactly how your text is formatted.
 
 The `Formatter().convertPlainText()` accepts the following:
-- `text` - the text to be formatted
-- `size` - [rows, columns] - the size to constrain the text to. Defaults to `[6, 22]`, which is the size of the board
-- `justify` - accepts `'center' | 'left' | 'right'`. `'center'` is the default.
-- `align` - accepts `'center' | 'top' | 'bottom'`. `'center'` is the default
-- `useVestaboardCentering` - `True | False` - Vestaboard's formatting centers the longest line when splitting lines, then left-justifies all remaining lines based on that line.
-It's a subtle difference and doesn't apply to every text that's passed in, so you may not notice anything different when using this option. Furthermore, this option *only applies when `justify` is set to `left` or `right`*, since it has no effect on center-justified text.
+
+*   `text` - the text to be formatted
+*   `size` - \[rows, columns] - the size to constrain the text to. Defaults to `[6, 22]`, which is the size of the board
+*   `justify` - accepts `'center' | 'left' | 'right'`. `'center'` is the default.
+*   `align` - accepts `'center' | 'top' | 'bottom'`. `'center'` is the default
+*   `useVestaboardCentering` - `True | False` - Vestaboard's formatting centers the longest line when splitting lines, then left-justifies all remaining lines based on that line.
+    It's a subtle difference and doesn't apply to every text that's passed in, so you may not notice anything different when using this option. Furthermore, this option *only applies when `justify` is set to `left` or `right`*, since it has no effect on center-justified text.
+
 ## Upcoming Support
 
-*   Formatting
-
-    *   Want to right justify, left justify, or center the entire content? Coming soon!
 
 *   Templates
     *   Choose from a list of templates to send to your board, including calendars, Q\&A, trivia, and more
@@ -319,6 +328,6 @@ You belong here ♥️
 
 *Note: this project is maintaned by independent developers and is not sponsored by nor affiliated with Vestaboard, Inc. I am unable to make changes to their API or answer questions about the company, upcoming API support, or future-state plans. For questions regarding Vestaboard's API, privacy policies, or to request assistance with your board, [please get in touch with them here.](https://www.vestaboard.com/contact)*
 
-[open an issue]: https://github.com/SonicRift/Vestaboard/issues
+[open an issue]: https://github.com/ShaneSutro/Vestaboard/issues
 
-[shane sutro]: https://github.com/SonicRift
+[shane sutro]: https://github.com/ShaneSutro
