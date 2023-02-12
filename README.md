@@ -305,7 +305,6 @@ The `Formatter().convertPlainText()` accepts the following:
 
 ## Upcoming Support
 
-
 *   Templates
     *   Choose from a list of templates to send to your board, including calendars, Q\&A, trivia, and more
 

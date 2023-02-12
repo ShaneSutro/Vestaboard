@@ -6,12 +6,11 @@ A lightweight wrapper for Vestaboard
 Board - Class
 Installable - Class
 """
+import warnings
+import json
 import requests
 from vestaboard.formatter import Formatter
 import vestaboard.vbUrls as vbUrls
-import warnings
-import json
-import os
 
 
 class Board:
@@ -99,14 +98,13 @@ class Board:
                             raise ValueError(
                                 "You must supply a read/write enabled API key to use readWrite mode, or instantiate an Installable in readWrite mode to store your credentials."
                             )
-                        else:
-                            self.apiKey = creds[0]
-                            if self.validateKey:
-                                self.read()
-                    except FileNotFoundError as e:
+                        self.apiKey = creds[0]
+                        if self.validateKey:
+                            self.read()
+                    except FileNotFoundError as exc:
                         raise FileNotFoundError(
                             "I couldn't find any saved credentials, and no API key was provided.\nTo use readWrite mode, you must supply a read/write enabled API key, or instantiate an Installable in readWrite mode."
-                        ) from e
+                        ) from exc
                 else:
                     self.apiKey = apiKey
                     if self.validateKey:
@@ -123,10 +121,10 @@ class Board:
                         raise ValueError(
                             "Credentials have been saved, but one or more are missing. Create a new installable and pass in saveCredentials=True, or pass in all three parameters when initializing a new Board."
                         )
-                except FileNotFoundError as e:
+                except FileNotFoundError as exc:
                     raise ValueError(
                         "You must create an installable first or save credentials by passing saveCredentials=True into installable()."
-                    ) from e
+                    ) from exc
             else:
                 self.apiKey = apiKey
                 self.apiSecret = apiSecret
@@ -159,7 +157,7 @@ class Board:
         }
         finalText = Formatter()._standard(text)
         req = requests.post(
-            vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText
+            vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText, timeout=5
         )
         req.raise_for_status()
 
@@ -217,6 +215,7 @@ class Board:
                 vbUrls.readWrite,
                 headers=headers,
                 data=json.dumps(finalText["characters"]),
+                timeout=5
             )
         else:
             headers = {
@@ -224,7 +223,7 @@ class Board:
                 "X-Vestaboard-Api-Secret": self.apiSecret,
             }
             requests.post(
-                vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText
+                vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText, timeout=5
             )
 
     def _enableLocalApi(
@@ -233,7 +232,7 @@ class Board:
         headers = {"X-Vestaboard-Local-Api-Enablement-Token": enablementKey}
         try:
             response = requests.post(
-                vbUrls.enableLocal.format(boardIP), headers=headers
+                vbUrls.enableLocal.format(boardIP), headers=headers, timeout=5
             )
             if not response.ok:
                 print(
@@ -247,7 +246,7 @@ class Board:
                 self.localKey = parsed["apiKey"]
                 print("Success! Here's your local API token:\n", parsed["apiKey"])
                 if saveToFile:
-                    with open("./local.txt", "w") as local:
+                    with open("./local.txt", "w", encoding="UTF-8") as local:
                         local.write(parsed["apiKey"])
                         local.write("\n")
                         local.write(boardIP)
@@ -259,7 +258,7 @@ class Board:
             raise ConnectionError(
                 "I couldn't connect to your board. Are you on the same network as the board you're trying to connect to?",
                 e,
-            )
+            ) from e
 
     def checkAndEnableLocalAPI(self):
         if "enablementToken" not in self.localOptions:
@@ -284,7 +283,9 @@ class Board:
         )
         return True
 
-    def read(self, options: dict = {}):
+    def read(self, options: dict = None):
+        if options is None:
+            options = {}
         if not self.readWrite:
             if self.localOptions is None or "useSavedToken" not in self.localOptions:
                 raise ValueError(
@@ -293,14 +294,14 @@ class Board:
         if self.localIP and self.localKey:
             localHeader = {"X-Vestaboard-Local-Api-Key": self.localKey}
             res = requests.get(
-                vbUrls.postLocal.format(self.localIP), headers=localHeader
+                vbUrls.postLocal.format(self.localIP), headers=localHeader, timeout=5
             )
             res.raise_for_status()
             response_text = res.json()["message"]
         elif self.readWrite and self.apiKey:
             readWriteHeader = {"X-Vestaboard-Read-Write-Key": self.apiKey}
             print("Getting board message")
-            res = requests.get(vbUrls.readWrite, headers=readWriteHeader)
+            res = requests.get(vbUrls.readWrite, headers=readWriteHeader, timeout=5)
             res.raise_for_status()
             response_text = json.loads(res.json()["currentMessage"]["layout"])
         if "print" in options and options["print"]:
@@ -322,6 +323,7 @@ class Board:
             vbUrls.postLocal.format(self.localIP),
             headers=localHeader,
             data=json.dumps(convertedByDefault),
+            timeout=5
         )
         res.raise_for_status()
         print(res.text)
@@ -332,6 +334,7 @@ class Board:
             vbUrls.postLocal.format(self.localIP),
             headers=localHeader,
             data=json.dumps(chars),
+            timeout=5
         )
         res.raise_for_status()
 
@@ -359,7 +362,7 @@ class Installable:
                 "Installables must have an apiKey and apiSecret parameter."
             )
         if saveCredentials and apiKey and apiSecret:
-            with open("./credentials.txt", "w") as cred:
+            with open("./credentials.txt", "w", encoding='UTF-8') as cred:
                 cred.write(apiKey + "\n")
                 cred.write(apiSecret + "\n")
                 cred.close()
@@ -377,10 +380,10 @@ class Installable:
             "X-Vestaboard-Api-Key": self.apiKey,
             "X-Vestaboard-Api-Secret": self.apiSecret,
         }
-        response = requests.get(vbUrls.subscription, headers=headers)
+        response = requests.get(vbUrls.subscription, headers=headers, timeout=5)
         response.raise_for_status()
         if self.saveCredentials or save and response.status_code == 200:
-            with open("./credentials.txt", "a") as cred:
+            with open("./credentials.txt", "a", encoding='UTF-8') as cred:
                 cred.write(response.json()["subscriptions"][0]["_id"] + "\n")
                 cred.close()
 
@@ -389,14 +392,14 @@ class Installable:
 
 
 def get_creds():
-    with open("./credentials.txt", "r") as cred:
+    with open("./credentials.txt", "r", encoding='UTF-8') as cred:
         creds = cred.read().splitlines()
         return creds
 
 
 def get_local_token():
     try:
-        with open("./local.txt", "r") as local:
+        with open("./local.txt", "r", encoding='UTF-8') as local:
             token = local.read().splitlines()
             if len(token) == 0:
                 raise ValueError(
@@ -411,7 +414,7 @@ def get_local_token():
                     "Your local.txt file contains more than your key and IP (or has more than two lines of text). Please remove the extra key or line and try again. Your local.txt file should contain only the local key and board IP address, each on their own line."
                 )
             return (token[0], token[1])
-    except FileNotFoundError:
+    except FileNotFoundError as exc:
         raise FileNotFoundError(
             "I couldn't find any stored tokens. If you have already enabled your board's local API, you can pass in your board's IP and token in via the `localApi` dict, or pass in just the enablement token to get and store a new API token."
-        )
+        ) from exc

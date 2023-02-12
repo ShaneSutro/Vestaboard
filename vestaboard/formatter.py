@@ -1,10 +1,10 @@
-from vestaboard.characters import characters
-from vestaboard.characters import colors
-from vestaboard.characters import reverseCharacters
 import warnings
 import textwrap
 import re
 import math
+from vestaboard.characters import characters
+from vestaboard.characters import colors
+from vestaboard.characters import reverseCharacters
 
 
 class Formatter:
@@ -72,10 +72,10 @@ class Formatter:
         if color != " ":
             try:
                 color = colors[color]
-            except KeyError:
+            except KeyError as exc:
                 raise KeyError(
                     "Valid colors are red, orange, yellow, green, blue, violet, white, and black (default black)."
-                )
+                ) from exc
         converted = []
         if len(inputString) - numCharacterCodes > 22:
             raise Exception(
@@ -147,7 +147,9 @@ class Formatter:
         else:
             return convertedArray
 
-    def _add_vestaboard_spacing(self, lines, size=[6, 22], justify="left"):
+    def _add_vestaboard_spacing(self, lines, size=None, justify="left"):
+        if size is None:
+            size = [6, 22]
         _, maxChars = size
         longestLine = 0
         for line in lines:
@@ -181,20 +183,16 @@ class Formatter:
 
         return paddedLines
 
-        # Find longest line
-        # Determine num of extra spaces needed and divide by 2 (take floor)
-        # Add spaces to left side (or right, if justify == right)
-        # Add remaining spaces to opposite side up to char limit
-        pass
-
     def convertPlainText(
         self,
         text,
-        size=[6, 22],
+        size=None,
         justify="center",
         align="center",
         useVestaboardCentering=False,
     ):
+        if size is None:
+            size = [6, 22]
         maxRows, maxCols = size
         splitLines = []
         for linebreak in text.split("\n"):
