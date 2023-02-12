@@ -297,9 +297,13 @@ The standard Vestaboard API allows you to post plain text and Vestaboard's endpo
 The `Formatter().convertPlainText()` accepts the following:
 
 *   `text` - the text to be formatted
+
 *   `size` - \[rows, columns] - the size to constrain the text to. Defaults to `[6, 22]`, which is the size of the board
+
 *   `justify` - accepts `'center' | 'left' | 'right'`. `'center'` is the default.
+
 *   `align` - accepts `'center' | 'top' | 'bottom'`. `'center'` is the default
+
 *   `useVestaboardCentering` - `True | False` - Vestaboard's formatting centers the longest line when splitting lines, then left-justifies all remaining lines based on that line.
     It's a subtle difference and doesn't apply to every text that's passed in, so you may not notice anything different when using this option. Furthermore, this option *only applies when `justify` is set to `left` or `right`*, since it has no effect on center-justified text.
 
