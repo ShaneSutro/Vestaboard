@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Vestaboard",
-    version="1.2.0a2",
+    version="1.2.0",
     author="Shane Sutro",
     author_email="shane@shanesutro.com",
     description="A Vestaboard Wrapper",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/SonicRift/Vestaboard.git",
+    url="https://github.com/ShaneSutro/Vestaboard.git",
     packages=setuptools.find_packages(),
     license="MIT",
     install_requires=[
