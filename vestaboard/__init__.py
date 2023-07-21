@@ -157,7 +157,10 @@ class Board:
         }
         finalText = Formatter()._standard(text)
         req = requests.post(
-            vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText, timeout=5
+            vbUrls.post.format(self.subscriptionId),
+            headers=headers,
+            json=finalText,
+            timeout=5,
         )
         req.raise_for_status()
 
@@ -215,7 +218,7 @@ class Board:
                 vbUrls.readWrite,
                 headers=headers,
                 data=json.dumps(finalText["characters"]),
-                timeout=5
+                timeout=5,
             )
         else:
             headers = {
@@ -223,7 +226,10 @@ class Board:
                 "X-Vestaboard-Api-Secret": self.apiSecret,
             }
             requests.post(
-                vbUrls.post.format(self.subscriptionId), headers=headers, json=finalText, timeout=5
+                vbUrls.post.format(self.subscriptionId),
+                headers=headers,
+                json=finalText,
+                timeout=5,
             )
 
     def _enableLocalApi(
@@ -287,7 +293,10 @@ class Board:
         if options is None:
             options = {}
         if not self.readWrite:
-            if self.localOptions is None or "useSavedToken" not in self.localOptions:
+            if self.localOptions is None or (
+                "useSavedToken" not in self.localOptions
+                and "key" not in self.localOptions
+            ):
                 raise ValueError(
                     '.read() is only available when using local API or by using a read/write enabled API key.\nPass "readWrite=True" along with your apiKey to enable readWrite mode.'
                 )
@@ -297,6 +306,16 @@ class Board:
                 vbUrls.postLocal.format(self.localIP), headers=localHeader, timeout=5
             )
             res.raise_for_status()
+            if res.text == "" and not self.validateKey:
+                warnings.warn(
+                    "The request succeeded, but I didn't get any text back from your board. If your board is currently displaying a message and this is unexpected, ensure you are using a valid local API key rather than a regular API key from Vestaboard's website."
+                )
+                return
+            elif res.text == "" and self.validateKey:
+                warnings.warn(
+                    "This API key appears to be invalid; I recieved an empty string from your board. If your board is not currently blank, double check your API key, or pass in your enablement token again to get a new API key."
+                )
+                return
             response_text = res.json()["message"]
         elif self.readWrite and self.apiKey:
             readWriteHeader = {"X-Vestaboard-Read-Write-Key": self.apiKey}
@@ -313,6 +332,8 @@ class Board:
             else:
                 converted = Formatter()._reverse_convert(response_text)
                 return converted
+        if self.validateKey:
+            print("Your API key appears to be valid!")
         return res.json()
 
     def _post_local(self, text):
@@ -323,7 +344,7 @@ class Board:
             vbUrls.postLocal.format(self.localIP),
             headers=localHeader,
             data=json.dumps(convertedByDefault),
-            timeout=5
+            timeout=5,
         )
         res.raise_for_status()
         print(res.text)
@@ -334,7 +355,7 @@ class Board:
             vbUrls.postLocal.format(self.localIP),
             headers=localHeader,
             data=json.dumps(chars),
-            timeout=5
+            timeout=5,
         )
         res.raise_for_status()
 
@@ -362,7 +383,7 @@ class Installable:
                 "Installables must have an apiKey and apiSecret parameter."
             )
         if saveCredentials and apiKey and apiSecret:
-            with open("./credentials.txt", "w", encoding='UTF-8') as cred:
+            with open("./credentials.txt", "w", encoding="UTF-8") as cred:
                 cred.write(apiKey + "\n")
                 cred.write(apiSecret + "\n")
                 cred.close()
@@ -383,7 +404,7 @@ class Installable:
         response = requests.get(vbUrls.subscription, headers=headers, timeout=5)
         response.raise_for_status()
         if self.saveCredentials or save and response.status_code == 200:
-            with open("./credentials.txt", "a", encoding='UTF-8') as cred:
+            with open("./credentials.txt", "a", encoding="UTF-8") as cred:
                 cred.write(response.json()["subscriptions"][0]["_id"] + "\n")
                 cred.close()
 
@@ -392,14 +413,14 @@ class Installable:
 
 
 def get_creds():
-    with open("./credentials.txt", "r", encoding='UTF-8') as cred:
+    with open("./credentials.txt", "r", encoding="UTF-8") as cred:
         creds = cred.read().splitlines()
         return creds
 
 
 def get_local_token():
     try:
-        with open("./local.txt", "r", encoding='UTF-8') as local:
+        with open("./local.txt", "r", encoding="UTF-8") as local:
             token = local.read().splitlines()
             if len(token) == 0:
                 raise ValueError(
