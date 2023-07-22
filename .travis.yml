@@ -4,6 +4,8 @@ arch:
   - ppc64le
   - s390x
 
+dist: focal
+
 language: python
 python:
   - '3.7'
