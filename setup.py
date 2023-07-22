@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Vestaboard",
-    version="1.2.1",
+    version="1.2.3",
     author="Shane Sutro",
     author_email="shane@shanesutro.com",
     description="A Vestaboard Wrapper",
