@@ -24,9 +24,13 @@ class MockedRead:
         def raise_for_status():
             return 200
 
+        def text():
+            return str(response)
+
         self.ok = True
         self.json = jsonFunc
         self.raise_for_status = raise_for_status
+        self.text = text
 
 
 def create_fake_cred_file():
