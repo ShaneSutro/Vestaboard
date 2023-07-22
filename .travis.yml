@@ -1,8 +1,5 @@
 os: linux
-arch:
-  - arm64
-  - ppc64le
-  - s390x
+arch: arm64
 
 dist: focal
 
@@ -18,3 +15,13 @@ install:
   - pip install .
 
 script: pytest
+
+deploy:
+  provider: pypi
+  user: __token__
+  distributions: sdist bdist_wheel
+  skip_existing: true
+  edge: true
+  on:
+    python: 3.9
+    tags: true
