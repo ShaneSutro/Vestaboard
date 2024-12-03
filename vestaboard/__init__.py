@@ -213,7 +213,7 @@ class Board:
         if self.localKey and self.localIP:
             self._raw_local(finalText["characters"])
         elif self.readWrite and self.apiKey:
-            headers = {"X-Vestaboard-Read-Write-Key": self.apiKey}
+            headers = {"X-Vestaboard-Read-Write-Key": self.apiKey, "Content-Type": "application/json"}
             requests.post(
                 vbUrls.readWrite,
                 headers=headers,
