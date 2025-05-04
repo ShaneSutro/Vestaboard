@@ -22,5 +22,5 @@ setuptools.setup(
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.9",
 )
