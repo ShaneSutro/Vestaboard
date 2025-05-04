@@ -9,6 +9,8 @@ Installable - Class
 import warnings
 import json
 import requests
+import threading
+import time
 from vestaboard.formatter import Formatter
 import vestaboard.vbUrls as vbUrls
 
@@ -213,7 +215,10 @@ class Board:
         if self.localKey and self.localIP:
             self._raw_local(finalText["characters"])
         elif self.readWrite and self.apiKey:
-            headers = {"X-Vestaboard-Read-Write-Key": self.apiKey, "Content-Type": "application/json"}
+            headers = {
+                "X-Vestaboard-Read-Write-Key": self.apiKey,
+                "Content-Type": "application/json",
+            }
             requests.post(
                 vbUrls.readWrite,
                 headers=headers,
@@ -358,6 +363,74 @@ class Board:
             timeout=5,
         )
         res.raise_for_status()
+
+    def _sendScreensNonBlocking(self, screens, delay):
+        for screenIndex in range(len(screens)):
+            screen = screens[screenIndex]
+            isLastScreen = screenIndex == len(screens) - 1
+            for i, row in enumerate(screen):
+                if not isinstance(row, list):
+                    raise ValueError(f"Nested items must be lists, not {type(row)}.")
+                if len(row) != 22:
+                    raise ValueError(
+                        f"Nested lists must be exactly 22 characters long. Element at {i} is {len(row)} characters long. Use the Formatter().convertLine() function if you need to add padding to your row."
+                    )
+                for j, char in enumerate(row):
+                    if not isinstance(char, int):
+                        raise ValueError(
+                            f"Nested lists must contain numbers only - check row {i} char {j} (0 indexed)"
+                        )
+            if len(screen) > 6:
+                # warnings.warn doesn't work with f strings
+                warning_message = f"The Vestaboard API accepts only 6 lines of characters; you've passed in {len(screen)}. Only the first 6 will be shown."
+                warnings.warn(warning_message)
+                del screen[6:]
+
+            finalText = Formatter()._raw(screen)
+            print(f"Sending screen {screenIndex + 1} of {len(screens)}")
+            if self.localKey and self.localIP:
+                self._raw_local(finalText["characters"])
+            elif self.readWrite and self.apiKey:
+                headers = {
+                    "X-Vestaboard-Read-Write-Key": self.apiKey,
+                    "Content-Type": "application/json",
+                }
+                requests.post(
+                    vbUrls.readWrite,
+                    headers=headers,
+                    data=json.dumps(finalText["characters"]),
+                    timeout=5,
+                )
+            else:
+                headers = {
+                    "X-Vestaboard-Api-Key": self.apiKey,
+                    "X-Vestaboard-Api-Secret": self.apiSecret,
+                }
+                requests.post(
+                    vbUrls.post.format(self.subscriptionId),
+                    headers=headers,
+                    json=finalText,
+                    timeout=5,
+                )
+            if not isLastScreen:
+                time.sleep(delay)
+
+    def sendScreens(self, screens, delay=60):
+        """
+        Posts already-formatted screens to the board with a pre-set delay.
+        Intended to be used with the Formatter.createScreens method. This method
+        expects each screen to be a fully-sized list of lists.
+
+        Keyword arguments:
+
+        `screens` - a list of screens
+
+        `delay` - seconds to delay between screens. Defaults to 60 seconds.
+        """
+        thread = threading.Thread(
+            target=self._sendScreensNonBlocking, args=(screens, delay)
+        )
+        thread.start()
 
 
 class Installable:
