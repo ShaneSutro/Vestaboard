@@ -5,12 +5,14 @@ dist: focal
 
 language: python
 python:
-  - '3.7'
-  - '3.8'
   - '3.9'
+  - '3.10'
+  - '3.11'
+  - '3.12'
+  - '3.13'
 
 install:
-  - pip install setuptools==60.8.2
+  - pip install setuptools==80.3.1
   - pip install -r requirements.txt
   - pip install .
 
@@ -23,5 +25,5 @@ deploy:
   skip_existing: true
   edge: true
   on:
-    python: 3.9
+    python: 3.13
     tags: true

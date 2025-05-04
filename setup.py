@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf8") as fh:
 
 setuptools.setup(
     name="Vestaboard",
-    version="1.2.4",
+    version="2.0.0",
     author="Shane Sutro",
     author_email="shane@shanesutro.com",
     description="A Vestaboard Wrapper",
@@ -14,9 +14,7 @@ setuptools.setup(
     url="https://github.com/ShaneSutro/Vestaboard.git",
     packages=setuptools.find_packages(),
     license="MIT",
-    install_requires=[
-        'requests'
-    ],
+    install_requires=["requests"],
     classifiers=[
         "Programming Language :: Python :: 3 :: Only",
         "License :: OSI Approved :: MIT License",
@@ -24,5 +22,5 @@ setuptools.setup(
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.9",
 )

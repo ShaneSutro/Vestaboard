@@ -230,3 +230,62 @@ class Formatter:
                         convertedLines.insert(0, blankLine)
 
         return convertedLines[0:maxRows]
+
+    def createScreens(
+        self,
+        text,
+        size=None,
+        justify="center",
+        align="center",
+        useVestaboardCentering=False,
+    ):
+        """
+        This function returns multiple screens of text. This is particularly useful when the
+        desired text is too big to fit on a single screen. The output is similar to the
+        Formatter.convertPlainText method; the primary difference is the return shape, which
+        is a nested list of lists.
+
+        The returned list size will match the `size` passed in and defaults to [6, 22].
+        """
+        if size is None:
+            size = [6, 22]
+        maxRows, maxCols = size
+        splitLines = []
+        for linebreak in text.split("\n"):
+            splitLines += textwrap.fill(linebreak, maxCols).split("\n")
+
+        convertedLines = []
+
+        if useVestaboardCentering:
+            if justify == "center":
+                warnings.warn(
+                    "Vestaboard formatting only affects left or right-justified text. Because of this, your text will be left justified by default. If you don't want your text left justified, remove `useVestaboardCentering` from your function call."
+                )
+                convertedLines = self._add_vestaboard_spacing(splitLines, size)
+            else:
+                convertedLines = self._add_vestaboard_spacing(splitLines, size, justify)
+        else:
+            for line in splitLines:
+                convertedLines.append(self.convertLine(line, justify, "black", False))
+
+        screens = [
+            convertedLines[i : i + maxRows]
+            for i in range(0, len(convertedLines), maxRows)
+        ]
+
+        for screen in screens:
+            if len(screen) < maxRows:
+                blankLine = [0] * maxCols
+                while len(screen) < maxRows:
+                    if align == "bottom":
+                        screen.insert(0, blankLine)
+                    else:
+                        screen.append(blankLine)
+
+                    if len(screen) < maxRows:
+                        if align == "top":
+                            screen.append(blankLine)
+                        else:
+                            screen.insert(0, blankLine)
+
+        return screens

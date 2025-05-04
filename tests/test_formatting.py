@@ -211,3 +211,10 @@ def test_convert_with_vestaboard_formatting():
 
     assert t1 == e1
     assert t2 == e2
+
+def test_create_screens_function():
+    t1 = Formatter().createScreens("Let us go forth, the tellers of tales, and seize whatever prey the heart long for, and have no fear. - W.B. Yeats, in his finest hour of lucidity")
+
+    assert len(t1) == 2
+    assert len(t1[0]) == 6
+    assert len(t1[1]) == 6
