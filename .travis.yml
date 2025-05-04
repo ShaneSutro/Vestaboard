@@ -8,6 +8,8 @@ python:
   - '3.7'
   - '3.8'
   - '3.9'
+  - '3.10'
+  - '3.11'
 
 install:
   - pip install setuptools==60.8.2
@@ -23,5 +25,5 @@ deploy:
   skip_existing: true
   edge: true
   on:
-    python: 3.9
+    python: 3.11
     tags: true
